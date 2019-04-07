@@ -13,8 +13,7 @@ const schema = mongoose.Schema({
     unique: true,
     required: [true, "is required"]
   },
-  firstName: String,
-  lastName: String,
+  name: String
 });
 
 module.exports = mongoose.model("Participant", schema);

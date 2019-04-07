@@ -1,6 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
+import axios from "axios";
+import queryString from "query-string";
 
 const App = () => {
   return (
@@ -20,6 +22,7 @@ const App = () => {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/about" component={About} />
+          <Route path="/auth/github/callback" component={GithubCallback} />
           <Route component={NotFound}/>
         </Switch>
       </div>
@@ -30,7 +33,7 @@ const App = () => {
 const Home = () => {
   return (
     <div>
-      <h1>Este es el home</h1>
+      <h1>Este es el home, bienvenidos</h1>
       <a href="/auth/github">Ingresar con Github</a>
     </div>
   )
@@ -39,5 +42,23 @@ const Home = () => {
 const About = () => <h1>Este es el about </h1>;
 
 const NotFound = () => <h1>No encontrado</h1>;
+
+class GithubCallback extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { redirect: false };
+
+    const qs = queryString.parse(location.search);
+    axios.post("/auth/github/token", { code: qs.code })
+      .then((response) => {
+        localStorage.setItem('auth_token', response.data.token);
+        this.setState({ redirect: true });
+      });
+  }
+
+  render() {
+    return this.state.redirect ? <Redirect to="/" /> : <h1>Autenticando ...</h1>
+  }
+}
 
 render(<App />, document.getElementById('app'));
