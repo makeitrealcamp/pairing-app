@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack -p && node server/server.js",
+    "start": "npx webpack -p && node server/server.js",
     "start:dev": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
