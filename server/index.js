@@ -7,17 +7,16 @@ const express = require("express");
 const Participant = require("./models/Participant");
 
 const isDev = process.env.NODE_ENV !== 'production';
-const port  = process.env.PORT || 3000;
+const port  = process.env.PORT || 3000
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/pairing', { useNewUrlParser: true });
 
 const app = express();
 app.use(express.json());
-console.log("Dirname: ", __dirname);
-app.use(express.static(path.resolve(__dirname, 'dist')));
+app.use(express.static(path.resolve(__dirname, '../dist')));
 
 if (isDev) {
-  console.log("Development mode ...");
+  console.log("*** Development Mode ***");
 
   require('dotenv').config();
   const webpack = require('webpack');
