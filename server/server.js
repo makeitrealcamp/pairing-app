@@ -13,6 +13,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/pairing',
 
 const app = express();
 app.use(express.json());
+console.log("Dirname: ", __dirname);
 app.use(express.static(path.resolve(__dirname, 'dist')));
 
 if (isDev) {
