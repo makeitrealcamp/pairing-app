@@ -1,4 +1,3 @@
-require('dotenv').config();
 const path = require('path');
 const axios = require("axios");
 const jwt = require("jsonwebtoken");
@@ -19,6 +18,7 @@ app.use(express.static(path.resolve(__dirname, 'dist')));
 if (isDev) {
   console.log("Development mode ...");
 
+  require('dotenv').config();
   const webpack = require('webpack');
   const webpackDevMiddleware = require('webpack-dev-middleware');
 
