@@ -53,7 +53,11 @@ router.get("/sessions/open", requireUser, async (req, res, next) => {
 router.post("/sessions/:sessionId/assistances", requireUser, async (req, res, next) => {
   try {
     const session = await Session.findOne({ _id: req.params.sessionId });
-    const assistance = await Assistance.create({ session: session, participant: res.locals.user, enqueuedAt: new Date() });
+    const assistance = await Assistance.create({
+      session: session,
+      participant: res.locals.user,
+      enqueuedAt: new Date()
+    });
 
     res.json(assistance);
   } catch (e) {
@@ -63,7 +67,10 @@ router.post("/sessions/:sessionId/assistances", requireUser, async (req, res, ne
 
 router.get("/sessions/:sessionId/assistance", requireUser, async (req, res, next) => {
   try {
-    const assistance = await Assistance.findOne({ sessionId: req.params.sessionId, participantId: res.locals.user._id });
+    const assistance = await Assistance.findOne({
+      sessionId: ObjectId(req.params.sessionId),
+      participantId: ObjectId(res.locals.user._id)
+    });
     if (assistance) {
       res.json(assistance);
     } else {
