@@ -9,11 +9,11 @@ const schema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Assistance'
   },
-  enqueued_at: DateTime,
+  enqueuedAt: Date,
   paired: {
     type: Boolean,
     default: false
-  }
+  },
   partner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Participant'

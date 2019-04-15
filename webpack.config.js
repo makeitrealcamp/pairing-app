@@ -1,5 +1,7 @@
 const path = require('path');
+const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const NODE_ENV = process.env.NODE_ENV;
 const isProd = NODE_ENV === 'production';
@@ -26,6 +28,31 @@ module.exports = {
         test: /\.jsx?$/,
         include: path.resolve(__dirname, 'client'),
         loader: 'babel-loader'
+      },
+      // SCSS files
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                'sourceMap': true,
+                'importLoaders': 1
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                plugins: () => [
+                  autoprefixer
+                ]
+              }
+            },
+            'sass-loader'
+          ]
+        })
       }
     ]
   },
@@ -35,5 +62,9 @@ module.exports = {
       template: path.resolve(__dirname, 'client/index.html'),
       inject: 'body'
     }),
+    new ExtractTextPlugin({
+      filename: 'css/[name].[hash].css',
+      disable: !isProd
+    })
   ]
 };
