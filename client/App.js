@@ -19,7 +19,7 @@ export default () => {
     <React.Fragment>
       <header className="main-header">
         <span className="brand">Curso básico de JavaScript</span>
-        <img src="logo.png" />
+        <img src="/logo.png" />
       </header>
       <div className="content">
         <Router>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect } from "react-router-dom";
+import Loading from "./Loading";
 import queryString from "query-string";
 import auth from "./services/auth";
 
@@ -18,6 +19,6 @@ export default class GithubCallback extends React.Component {
   }
 
   render() {
-    return this.state.redirect ? <Redirect to="/" /> : <h1>Autenticando ...</h1>
+    return this.state.redirect ? <Redirect to="/" /> : <Loading text="Autenticando ..." />
   }
 }
