@@ -17,7 +17,14 @@ const schema = mongoose.Schema({
   partner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Participant'
+  },
+  feedback: {
+    rating: Number,
+    class: String,
+    exercises: String,
+    partner: String
   }
+
 });
 
 module.exports = mongoose.model("Assistance", schema);

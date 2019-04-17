@@ -63,3 +63,56 @@
     }
   }
 }
+
+.feedback-page {
+  .form-group {
+    margin-bottom: 25px;
+
+    &.has-error {
+      textarea, input[type=text] { border-color: red; }
+    }
+
+    .error-help {
+      display: block;
+      color: red;
+      font-size: 0.9rem;
+      margin-top: 3px;
+    }
+  }
+
+  .rating {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 auto;
+    margin-bottom: 60px;
+    max-width: 300px;
+
+    .rating-star {
+      font-size: 1.8rem;
+      cursor: pointer;
+
+      &.highlighted { color: $link_color; }
+    }
+  }
+
+  textarea {
+    font-size: 0.9rem;
+    width: 600px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 7px 25px;
+    border-radius: 5px;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

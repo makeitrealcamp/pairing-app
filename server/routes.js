@@ -14,7 +14,9 @@ module.exports = (io) => {
   router.get("/sessions/open", requireUser, sessions.open);
 
   router.post("/sessions/:sessionId/assistances", requireUser, assistances.create);
-  router.get("/sessions/:sessionId/assistance", requireUser, assistances.show);
+  router.get("/sessions/:sessionId/assistance", requireUser, assistances.findBySession);
+  router.get("/assistances/:id", requireUser, assistances.show);
+  router.patch("/assistances/:assistanceId", requireUser, assistances.update);
   router.patch("/assistances/:assistanceId/enqueue", requireUser, assistances.enqueue);
   router.patch("/assistances/:assistanceId/dequeue", requireUser, assistances.dequeue);
   router.post("/pair", assistances.pair);

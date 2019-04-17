@@ -24,9 +24,9 @@ header.main-header {
   width: 100%;
 
   .brand {
-    color: $font_color;
+    color: #333;
     font-size: 1.2rem;
-    font-weight: 600;
+    font-weight: normal;
   }
 
   img {
@@ -64,3 +64,18 @@ header.main-header {
 }
 
 .text-center { text-align: center; }
+
+.alert {
+  position: absolute;
+  top: 100px;
+  right: 20px;
+  text-shadow: none;
+  padding: 15px 20px;
+  max-width: 400px;
+  border-radius: 5px;
+
+  &.alert-error {
+    background-color: #db2525;
+    color: white;
+  }
+}

@@ -21,6 +21,19 @@ module.exports.create = async (req, res, next) => {
 
 module.exports.show = async (req, res, next) => {
   try {
+    const assistance = await Assistance.findById(req.params.id).populate("partner");
+    if (assistance) {
+      res.json(assistance);
+    } else {
+      res.status(404).json({ error: "Not Found" });
+    }
+  } catch (e) {
+    next(e);
+  }
+}
+
+module.exports.findBySession = async (req, res, next) => {
+  try {
     const assistance = await Assistance.findOne({
       session: new ObjectId(req.params.sessionId),
       participant: new ObjectId(res.locals.user._id)
@@ -35,10 +48,10 @@ module.exports.show = async (req, res, next) => {
   }
 };
 
-module.exports.enqueue = async (req, res, next) => {
+const update = async (req, res, next, data) => {
   try {
     const id = new ObjectId(req.params.assistanceId);
-    await Assistance.updateOne({ _id: id }, { enqueuedAt: new Date() });
+    await Assistance.updateOne({ _id: id }, data);
 
     const assistance = await Assistance.findOne({ _id: id });
     if (assistance) {
@@ -49,22 +62,18 @@ module.exports.enqueue = async (req, res, next) => {
   } catch (e) {
     next(e);
   }
+}
+
+module.exports.update = async (req, res, next) => {
+  await update(req, res, next, req.body);
+};
+
+module.exports.enqueue = async (req, res, next) => {
+  await update(req, res, next, { enqueuedAt: new Date() });
 };
 
 module.exports.dequeue = async (req, res, next) => {
-  try {
-    const id = new ObjectId(req.params.assistanceId);
-    await Assistance.updateOne({ _id: id }, { enqueuedAt: null });
-
-    const assistance = await Assistance.findOne({ _id: id });
-    if (assistance) {
-      res.json(assistance);
-    } else {
-      res.status(404).json({ error: "Not Found" });
-    }
-  } catch (e) {
-    next(e);
-  }
+  await update(req, res, next, { enqueuedAt: null });
 };
 
  module.exports.pair = async (req, res, next) => {

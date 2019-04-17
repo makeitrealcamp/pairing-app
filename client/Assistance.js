@@ -62,7 +62,7 @@ export default class Assistance extends React.Component {
               <span className="partner-github">{this.state.assistance.partner.github}</span>
             </div>
           </div>
-          <p className="footnote">Cuando termines los ejercicios no olvides <Link to={`/assistances/this.state.assistance._id/feedback`}>calificar la sesión y dejar retroalimentación</Link>.</p>
+          <p className="footnote">Cuando termines los ejercicios no olvides <Link to={`/assistances/${this.state.assistance._id}/feedback`}>calificar la sesión y dejar retroalimentación</Link>.</p>
         </div>
       );
     } else {
