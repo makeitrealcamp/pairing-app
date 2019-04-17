@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import Loading from "./Loading";
 import auth from "./services/auth";
 import sessions from "./services/sessions";
 import assistances from "./services/assistances";
@@ -24,19 +25,20 @@ export default class Home extends React.Component {
   }
 
   render() {
-    return this.state.loading ? this.renderLoading() : this.renderPage();
-  }
-
-  renderLoading() {
-    return <h1>Loading</h1>;
+    return this.state.loading ? <Loading /> : this.renderPage();
   }
 
   renderPage() {
     return (
-      this.state.session ?
-        <Link to="/assistance">Ingresar a la sesión</Link>
-      :
-        <h1>No hay ninguna sesión activa en este momento</h1>
+      <div className="home-page">
+        { this.state.session ?
+          <div className="session">
+            <h1>{ this.state.session.name }</h1>
+            <Link to="/assistance" className="btn">Ingresar a la sesión</Link>
+          </div>
+        :
+          <h1>No hay ninguna sesión activa en este momento</h1> }
+      </div>
     );
   }
 };

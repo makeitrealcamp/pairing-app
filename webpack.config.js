@@ -2,6 +2,7 @@ const path = require('path');
 const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const NODE_ENV = process.env.NODE_ENV;
 const isProd = NODE_ENV === 'production';
@@ -13,7 +14,7 @@ module.exports = {
     ]
   },
 
-  mode: "development",
+  mode: 'development',
 
   output: {
     filename: 'js/[name].js',
@@ -45,9 +46,7 @@ module.exports = {
             {
               loader: 'postcss-loader',
               options: {
-                plugins: () => [
-                  autoprefixer
-                ]
+                plugins: () => [ autoprefixer ]
               }
             },
             'sass-loader'
@@ -65,6 +64,9 @@ module.exports = {
     new ExtractTextPlugin({
       filename: 'css/[name].[hash].css',
       disable: !isProd
-    })
+    }),
+    new CopyWebpackPlugin([{
+      from: path.resolve(__dirname, 'client/public')
+    }])
   ]
 };

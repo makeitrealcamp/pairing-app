@@ -9,7 +9,7 @@ const requireUser = async (req, res, next) => {
       if (decoded.user) {
         const user = await Participant.findOne({ _id: decoded.user });
         if (user) {
-          res.locals.user = decoded.user;
+          res.locals.user = user;
           return next();
         }
       }

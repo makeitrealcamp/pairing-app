@@ -13,6 +13,7 @@ const schema = mongoose.Schema({
     unique: true,
     required: [true, "is required"]
   },
+  avatarUrl: String,
   name: String
 });
 

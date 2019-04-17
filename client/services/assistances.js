@@ -23,8 +23,31 @@ class Assistances {
 
       return response.data;
     } catch (e) {
-      console.log(e);
-      return null;
+      throw e;
+    }
+  }
+
+  async enqueue(assistance) {
+    try {
+      const response = await axios.patch(`/assistances/${assistance._id}/enqueue`, {}, {
+        headers: { "Authorization": auth.token }
+      });
+
+      return response.data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async dequeue(assistance) {
+    try {
+      const response = await axios.patch(`/assistances/${assistance._id}/dequeue`, {}, {
+        headers: { "Authorization": auth.token }
+      });
+
+      return response.data;
+    } catch (e) {
+      throw e;
     }
   }
 }

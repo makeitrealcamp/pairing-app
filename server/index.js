@@ -1,17 +1,21 @@
 const path = require('path');
 const mongoose = require("mongoose");
+const socketio = require("socket.io");
 const express = require("express");
+
+const app = express();
+var server = require('http').Server(app);
+var io = socketio(server);
 
 require("./models/Participant");
 require("./models/Session");
-const routes = require('./routes');
+const routes = require('./routes')(io);
 
 const isDev = process.env.NODE_ENV !== 'production';
 const port  = process.env.PORT || 3000;
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/pairing', { useNewUrlParser: true });
 
-const app = express();
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, '../dist')));
 
@@ -37,4 +41,4 @@ if (isDev) {
   });
 }
 
-app.listen(port, () => console.log(`Starting on port ${port} ...`));
+server.listen(port, () => console.log(`Starting on port ${port} ...`));
