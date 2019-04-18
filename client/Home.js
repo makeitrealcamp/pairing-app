@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import Loading from "./Loading";
+import Alert from "./Alert";
 import auth from "./services/auth";
 import sessions from "./services/sessions";
 import assistances from "./services/assistances";
@@ -17,11 +18,23 @@ export default class Home extends React.Component {
   }
 
   async componentDidMount() {
-    const session = await sessions.findActive();
-    this.setState({
-      loading: false,
-      session: session,
-    });
+    try {
+      const session = await sessions.findActive();
+      this.setState({
+        loading: false,
+        session: session,
+        alert: null
+      });
+    } catch (err) {
+      console.log("Message: ", err.message);
+      this.setState({
+        loading: false,
+        alert: {
+          variant: "error",
+          text: `Ha ocurrido un error inesperado: ${err.message}. Refresca la página e intenta nuevamente.`
+        }
+      });
+    }
   }
 
   render() {
@@ -38,6 +51,8 @@ export default class Home extends React.Component {
           </div>
         :
           <h1>No hay ninguna sesión activa en este momento</h1> }
+
+        {this.state.alert ? <Alert variant={this.state.alert.variant}>{this.state.alert.text}</Alert> : null}
       </div>
     );
   }

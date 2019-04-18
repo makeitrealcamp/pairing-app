@@ -5,6 +5,7 @@ import Loading from "./Loading";
 import FormGroup from "./FormGroup";
 import Alert from "./Alert";
 import assistances from "./services/assistances";
+import _ from "lodash";
 
 export default class Feedback extends React.Component {
   constructor(props) {
@@ -26,7 +27,7 @@ export default class Feedback extends React.Component {
   async componentDidMount() {
     const assistance = await assistances.findById(this.props.match.params.id);
     if (assistance) {
-      assistance.feedback = assistance.feedback || {};
+      assistance.feedback = assistance.feedback || { rating: 0 };
       this.setState({ loading: false, assistance });
     } else {
       this.setState({ loading: false });
@@ -107,7 +108,7 @@ export default class Feedback extends React.Component {
         this.setState({ alert: null });
       }, 4000);
     } else {
-      await assistances.update(this.state.assistance, { feedback: this.state.assistance.feedback });
+      await assistances.update(this.state.assistance, { status: "rated", feedback: this.state.assistance.feedback });
       this.props.history.push('/thank-you');
     }
   }

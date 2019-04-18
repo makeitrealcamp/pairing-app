@@ -10,9 +10,10 @@ const schema = mongoose.Schema({
     ref: 'Assistance'
   },
   enqueuedAt: Date,
-  paired: {
-    type: Boolean,
-    default: false
+  status: {
+    type: String,
+    enum : ["enqueued", "solo", "paired", "not_paired", "rated"],
+    default: "enqueued"
   },
   partner: {
     type: mongoose.Schema.Types.ObjectId,

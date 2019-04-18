@@ -12,8 +12,7 @@ export default class Assistance extends React.Component {
 
     this.state = {
       loading: true,
-      assistance: null,
-      notPaired: false // if impossible to pair
+      assistance: null
     }
   }
 
@@ -21,11 +20,10 @@ export default class Assistance extends React.Component {
     const session = await sessions.findActive();
     if (session) {
       const assistance = await this.findOrCreateAssistance(session);
-      if (!assistance.paired) {
+      if (assistance.status === "enqueued") {
         this.configureWebSocket();
         this.configureTimer();
       }
-
       this.setState({ loading: false, assistance });
     } else {
       this.setState({ loading: false });
@@ -41,45 +39,70 @@ export default class Assistance extends React.Component {
   }
 
   renderAssistance() {
-    if (this.state.notPaired) {
-      return (
-        <div className="assistance-page">
-          <div className="text-center">
-            <p className="intro">No fue posible encontrar una pareja de trabajo. Puedes trabajar individualmente o <a href="/assistance" onClick={this.retry}>intentarlo nuevamente</a></p>
-          </div>
-        </div>
-      );
-    }
+    const status = this.state.assistance.status;
 
-    if (this.state.assistance.paired) {
-      return (
-        <div className="assistance-page">
-          <p className="intro">Tu pareja de trabajo para esta sesión es:</p>
-          <div className="partner">
-            <img src={this.state.assistance.partner.avatarUrl} />
-            <div className="partner-info">
-              <span className="partner-name">{this.state.assistance.partner.name}</span>
-              <span className="partner-github">{this.state.assistance.partner.github}</span>
-            </div>
-          </div>
-          <p className="footnote">Cuando termines los ejercicios no olvides <Link to={`/assistances/${this.state.assistance._id}/feedback`}>calificar la sesión y dejar retroalimentación</Link>.</p>
-        </div>
-      );
-    } else {
-      return (
-        <div style={{ textAlign: "center" }} className="assistance-page">
-          <img src="loading.svg" />
-          <p style={{ fontSize: "1.2rem", marginTop: "40px" }}>Iniciando sesión de pair programming ... </p>
-        </div>
-      )
+    if (status === "enqueued") {
+      return this.renderEnqueued();
+    } else if (status === "not_paired") {
+      return this.renderNotPaired();
+    } else if (status === "paired") {
+      return this.renderPaired();
+    } else if (status === "solo") {
+      return this.renderSolo();
+    } else if (status === "rated") {
+      return <Redirect to={`/assistances/${this.state.assistance._id}/feedback`} />;
     }
+  }
+
+  renderEnqueued() {
+    return (
+      <div style={{ textAlign: "center" }} className="assistance-page">
+        <img src="loading.svg" />
+        <p style={{ fontSize: "1.2rem", marginTop: "40px" }}>Iniciando sesión de pair programming ... </p>
+      </div>
+    )
+  }
+
+  renderNotPaired() {
+    return (
+      <div className="assistance-page">
+        <div className="text-center">
+          <p className="intro">No fue posible encontrar una pareja de trabajo. Puedes <a href="#" onClick={this.solo.bind(this)}>trabajar individualmente</a> o <a href="/assistance" onClick={this.retry}>intentarlo nuevamente</a></p>
+        </div>
+      </div>
+    );
+  }
+
+  renderPaired() {
+    return (
+      <div className="assistance-page">
+        <p className="intro">Tu pareja de trabajo para esta sesión es:</p>
+        <div className="partner">
+          <img src={this.state.assistance.partner.avatarUrl} />
+          <div className="partner-info">
+            <span className="partner-name">{this.state.assistance.partner.name}</span>
+            <span className="partner-github">{this.state.assistance.partner.github}</span>
+          </div>
+        </div>
+        <p className="footnote">Cuando termines los ejercicios no olvides <Link to={`/assistances/${this.state.assistance._id}/feedback`}>calificar la sesión y dejar retroalimentación</Link>.</p>
+      </div>
+    );
+  }
+
+  renderSolo() {
+    return (
+      <div className="assistance-page">
+        <p className="intro">Estás en una sesión individual</p>
+        <p className="footnote">Cuando termines los ejercicios no olvides <Link to={`/assistances/${this.state.assistance._id}/feedback`}>calificar la sesión y dejar retroalimentación</Link>.</p>
+      </div>
+    );
   }
 
   async findOrCreateAssistance(session) {
     let assistance = await assistances.findBySession(session._id);
     if (!assistance) {
       assistance = await assistances.create(session._id);
-    } else if (!assistance.paired) {
+    } else if (assistance.status === "not_paired") {
       assistance = await assistances.enqueue(assistance);
     }
     return assistance;
@@ -97,8 +120,16 @@ export default class Assistance extends React.Component {
   configureTimer() {
     this.timeout = setTimeout(async () => {
       const assistance = await assistances.dequeue(this.state.assistance);
-      this.setState({ loading: false, notPaired: true, assistance });
+      this.setState({ loading: false, assistance });
     }, 60000);
+  }
+
+  async solo(e) {
+    e.preventDefault();
+
+    this.setState({ loading: true });
+    const assistance = await assistances.update(this.state.assistance, { status: "solo" });
+    this.setState({ loading: false, assistance });
   }
 
   retry() {

@@ -69,11 +69,11 @@ module.exports.update = async (req, res, next) => {
 };
 
 module.exports.enqueue = async (req, res, next) => {
-  await update(req, res, next, { enqueuedAt: new Date() });
+  await update(req, res, next, { status: "enqueued", enqueuedAt: new Date() });
 };
 
 module.exports.dequeue = async (req, res, next) => {
-  await update(req, res, next, { enqueuedAt: null });
+  await update(req, res, next, { status: "not_paired", enqueuedAt: null });
 };
 
  module.exports.pair = async (req, res, next) => {

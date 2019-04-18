@@ -9,8 +9,13 @@ class Sessions {
       });
 
       return response.data;
-    } catch (e) {
-      if (err.response.status != 404) console.log(e);
+    } catch (err) {
+      if (err.response.status == 404) return null;
+      console.log("Status: ", err.response.status);
+      if (err.response.status == 401) {
+        auth.logout();
+        throw new Error("Authentication failed");
+      }
       return null;
     }
   }
