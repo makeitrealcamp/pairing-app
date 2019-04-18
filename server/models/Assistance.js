@@ -12,7 +12,7 @@ const schema = mongoose.Schema({
   enqueuedAt: Date,
   status: {
     type: String,
-    enum : ["enqueued", "solo", "paired", "not_paired", "rated"],
+    enum : ["enqueued", "pairing", "solo", "paired", "not_paired", "rated"],
     default: "enqueued"
   },
   partner: {

@@ -21,7 +21,7 @@ export default class Assistance extends React.Component {
     if (session) {
       const assistance = await this.findOrCreateAssistance(session);
       if (assistance.status === "enqueued") {
-        this.configureWebSocket();
+        this.configureWebSocket(assistance);
         this.configureTimer();
       }
       this.setState({ loading: false, assistance });
@@ -41,7 +41,7 @@ export default class Assistance extends React.Component {
   renderAssistance() {
     const status = this.state.assistance.status;
 
-    if (status === "enqueued") {
+    if (status === "enqueued" || status === "pairing") {
       return this.renderEnqueued();
     } else if (status === "not_paired") {
       return this.renderNotPaired();
@@ -108,13 +108,13 @@ export default class Assistance extends React.Component {
     return assistance;
   }
 
-  configureWebSocket() {
+  configureWebSocket(assistance) {
     const socket = io();
     socket.on('paired', assistance => {
       clearTimeout(this.timeout);
       this.setState({ assistance });
     });
-    socket.emit("subscribe", { token: auth.token });
+    socket.emit("subscribe", { assistanceId: assistance._id, token: auth.token });
   }
 
   configureTimer() {

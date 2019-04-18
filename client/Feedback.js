@@ -57,9 +57,15 @@ export default class Feedback extends React.Component {
         <div className="form-group">
           <textarea onChange={this.onExercisesInputChange} rows="3" placeholder="¿Cómo te parecieron los ejercicios?" value={ feedback.exercises }></textarea>
         </div>
-        <div className="form-group">
-          <textarea onChange={this.onPartnerInputChange} rows="3" placeholder="¿Cómo te fue con tu pareja de programación?" value={ feedback.partner }></textarea>
-        </div>
+        {
+          this.state.assistance.paired ?
+            <div className="form-group">
+              <textarea onChange={this.onPartnerInputChange} rows="3" placeholder="¿Cómo te fue con tu pareja de programación?" value={ feedback.partner }></textarea>
+            </div>
+          :
+            null
+        }
+
         <div className="actions">
           <Link to="/assistance">Volver</Link>
           <button onClick={this.submit}>Enviar</button>
@@ -78,13 +84,14 @@ export default class Feedback extends React.Component {
 
   onClassInputChange(e) {
     const value = e.target.value;
+
+    this.setState({
+      assistance: _.merge(this.state.assistance, { feedback: { class: value } })
+    });
+
     if (value.trim().length == 0) {
       this.setState({
         errors: { ...this.state.errors, class: "is required" }
-      });
-    } else {
-      this.setState({
-        assistance: _.merge(this.state.assistance, { feedback: { class: value } })
       });
     }
   }

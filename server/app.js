@@ -1,11 +1,13 @@
 const path = require('path');
 const mongoose = require("mongoose");
 const socketio = require("socket.io");
+const redis = require('socket.io-redis');
 const express = require("express");
 
 const app = express();
-var server = require('http').Server(app);
-var io = socketio(server);
+const server = require('http').Server(app);
+const io = socketio(server);
+io.adapter(redis({ host: 'localhost', port: 6379 }));
 
 require("./models/Participant");
 require("./models/Session");

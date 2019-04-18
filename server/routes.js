@@ -23,10 +23,13 @@ module.exports = (io) => {
 
   io.on("connection", socket => {
     socket.on("subscribe", async data => {
+      const assistanceId = data.assistanceId;
       const token = data.token;
+
       const decoded = await jwt.verify(token, process.env.SECRET_KEY || "secret key");
       if (decoded.user) {
-        clients.push({ participantId: decoded.user, socket });
+        socket.join(`assistance-${assistanceId}`);
+        // clients.push({ participantId: decoded.user, socket });
       }
     });
   });
