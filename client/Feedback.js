@@ -58,7 +58,7 @@ export default class Feedback extends React.Component {
           <textarea onChange={this.onExercisesInputChange} rows="3" placeholder="¿Cómo te parecieron los ejercicios?" value={ feedback.exercises }></textarea>
         </div>
         {
-          this.state.assistance.paired ?
+          this.state.assistance.status == "paired" ?
             <div className="form-group">
               <textarea onChange={this.onPartnerInputChange} rows="3" placeholder="¿Cómo te fue con tu pareja de programación?" value={ feedback.partner }></textarea>
             </div>

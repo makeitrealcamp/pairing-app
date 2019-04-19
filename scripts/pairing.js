@@ -1,6 +1,6 @@
 'use strict'
 
-const io = require('socket.io-emitter')({ host: '127.0.0.1', port: 6379 });
+const io = require('socket.io-emitter')(process.env.REDIS_URL || "redis://127.0.0.1:6379");
 const mongoose = require("mongoose");
 require("../server/models/Participant");
 const Assistance = require("../server/models/Assistance");
@@ -38,7 +38,7 @@ const pair = async (a1, a2) => {
 const execute = async () => {
   const a1 = await dequeue();
   if (!a1) {
-    return console.log("No assistances found");
+    return console.log("No pending assistances found");
   }
 
   const a2 = await dequeue();
@@ -46,7 +46,7 @@ const execute = async () => {
     await pair(a1, a2);
     console.log(`* Paired: ${a1.participant.github} with ${a2.participant.github}`);
   } else {
-    console.log("No partner found for participant: ", a1.participant);
+    console.log("No partner found for participant:", a1.participant.github);
     await Assistance.updateOne({ _id: a1._id }, { $set: { status: "enqueued" } });
   }
 };
@@ -56,11 +56,53 @@ const clean = () => {
   io.redis.quit();
 };
 
+const set = (key, value) => {
+  return new Promise((resolve, reject) => {
+    io.redis.set(key, value, (err, res) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve();
+    });
+  });
+};
+
+const get = (key) => {
+  return new Promise((resolve, reject) => {
+    io.redis.get(key, function(err, result) {
+      if (err) {
+        return reject(err);
+      }
+      resolve(result);
+    })
+  });
+};
+
+const wait = (ms) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+const run = async () => {
+  console.log("Executing ...");
+  try {
+    let running = "true";
+    while (running === "true") {
+      await execute();
+      await wait(1000);
+
+      running = await get("pairing:running");
+      console.log("Running", running);
+    }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    clean();
+  }
+}
+
 console.log("Starting ...");
-execute().then(() => {
-  console.log("Abbiamo finito, tutto bene!");
-  clean();
-}).catch((err) => {
-  console.log(err);
-  clean();
+set("pairing:running", "true").then(() => {
+  run();
 });
