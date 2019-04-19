@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Ubuntu');
+
 * { box-sizing: border-box; }
 
 html, body, #app, .content {
@@ -6,7 +8,8 @@ html, body, #app, .content {
 }
 
 body {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 18px;
 }
 
 header.main-header {
@@ -16,15 +19,16 @@ header.main-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: white;
+  background: #2F3336;
   height: 70px;
-  border-bottom: 1px solid #e5e5e2;
-  box-shadow: 1px 1px 5px #d5d5d2;
+  border-bottom: 1px solid #242728;
+  // box-shadow: 1px 1px 10px #111;
   padding: 15px 25px;
   width: 100%;
 
   .brand {
-    color: #333;
+    color: lighten($font_color, 10%);
+    font-family: 'Ubuntu', sans-serif;
     font-size: 1.2rem;
     font-weight: normal;
   }
@@ -40,17 +44,23 @@ header.main-header {
   align-items: center;
   background-color: $bg;
   color: $font_color;
-  text-shadow: 1px 1px white;
+  text-shadow: -1px -1px #111;
 
   a {
     color: $link_color;
+    // font-weight: 300;
     text-decoration: none;
+    text-shadow: none;
+
+    &:hover {
+      color: darken($link_color, 5%);
+    }
   }
 }
 
 .btn, a.btn {
   color: $font_color;
-  font-size: 18px;
+  font-size: 1rem;
   font-weight: 600;
   text-decoration: none;
   border: 2px solid $font_color;
@@ -58,8 +68,8 @@ header.main-header {
   padding: 9px 15px;
 
   &:hover {
-    color: #333;
-    border-color: #333;
+    color: lighten($font_color, 10%);
+    border-color: lighten($font_color, 10%);
   }
 }
 

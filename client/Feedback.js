@@ -52,15 +52,18 @@ export default class Feedback extends React.Component {
           ))}
         </div>
         <FormGroup error={this.state.errors.class}>
-          <textarea onChange={this.onClassInputChange} rows="3" placeholder="¿Cómo te pareció la clase de hoy?" value={ feedback.class } autoFocus></textarea>
+          <label for="feedback-class">¿Cómo te pareció la clase de hoy?</label>
+          <textarea id="feedback-class" onChange={this.onClassInputChange} rows="3" value={ feedback.class } autoFocus></textarea>
         </FormGroup>
         <div className="form-group">
-          <textarea onChange={this.onExercisesInputChange} rows="3" placeholder="¿Cómo te parecieron los ejercicios?" value={ feedback.exercises }></textarea>
+        <label for="feedback-exercises">¿Cómo te parecieron los ejercicios?</label>
+          <textarea onChange={this.onExercisesInputChange} rows="3" value={ feedback.exercises }></textarea>
         </div>
         {
           this.state.assistance.status == "paired" ?
             <div className="form-group">
-              <textarea onChange={this.onPartnerInputChange} rows="3" placeholder="¿Cómo te fue con tu pareja de programación?" value={ feedback.partner }></textarea>
+              <label for="feedback-partner">¿Cómo te fue con tu pareja de programación?</label>
+              <textarea onChange={this.onPartnerInputChange} rows="3" value={ feedback.partner }></textarea>
             </div>
           :
             null
@@ -68,7 +71,7 @@ export default class Feedback extends React.Component {
 
         <div className="actions">
           <Link to="/assistance">Volver</Link>
-          <button onClick={this.submit}>Enviar</button>
+          <button onClick={this.submit} className="btn">Enviar</button>
         </div>
 
         {this.state.alert ? <Alert variant={this.state.alert.variant}>{this.state.alert.text}</Alert> : null}
@@ -86,10 +89,11 @@ export default class Feedback extends React.Component {
     const value = e.target.value;
 
     this.setState({
-      assistance: _.merge(this.state.assistance, { feedback: { class: value } })
+      assistance: _.merge(this.state.assistance, { feedback: { class: value } }),
+      errors: {}
     });
 
-    if (value.trim().length == 0) {
+    if (value.trim().length === 0) {
       this.setState({
         errors: { ...this.state.errors, class: "is required" }
       });
