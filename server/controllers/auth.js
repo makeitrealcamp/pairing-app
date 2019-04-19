@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const Participant = require("../models/Participant");
 
 module.exports.githubAuth = (req, res) => {
-  res.redirect(`https://github.com/login/oauth/authorize?client_id=${process.env.OAUTH_CLIENT_ID}&scope=user`);
+  res.redirect(`https://github.com/login/oauth/authorize?client_id=${process.env.OAUTH_CLIENT_ID}&scope=read:user`);
 }
 
 module.exports.githubToken = async (req, res, next) => {
