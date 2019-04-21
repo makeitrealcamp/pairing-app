@@ -19,7 +19,6 @@ module.exports = (io) => {
   router.patch("/assistances/:assistanceId", requireUser, assistances.update);
   router.patch("/assistances/:assistanceId/enqueue", requireUser, assistances.enqueue);
   router.patch("/assistances/:assistanceId/dequeue", requireUser, assistances.dequeue);
-  router.post("/pair", assistances.pair);
 
   io.on("connection", socket => {
     socket.on("subscribe", async data => {

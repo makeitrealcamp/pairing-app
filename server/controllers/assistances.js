@@ -75,23 +75,3 @@ module.exports.enqueue = async (req, res, next) => {
 module.exports.dequeue = async (req, res, next) => {
   await update(req, res, next, { status: "not_paired", enqueuedAt: null });
 };
-
- module.exports.pair = async (req, res, next) => {
-   try {
-     const a1 = await Assistance.findById(new ObjectId(req.body.assistanceId)).populate("partner");
-     const a2 = await Assistance.findOne({ session: a1.session, participant: a1.partner._id }).populate("partner");
-
-     clients.forEach((client) => {
-       if (client.participantId == a1.participant) {
-         client.socket.emit("paired", a1);
-       }
-       if (client.participantId == a2.participant) {
-         client.socket.emit("paired", a2);
-       }
-     });
-
-     res.json({ ok: true });
-   } catch (e) {
-     next(e);
-   }
- };
