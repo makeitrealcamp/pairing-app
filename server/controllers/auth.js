@@ -18,6 +18,7 @@ module.exports.githubToken = async (req, res, next) => {
 
     const accessToken = r1.data.access_token;
     const r2 = await axios.get("https://api.github.com/user?access_token=" + accessToken);
+    console.log(r2.data);
 
     let p = await Participant.findOne({ email: r2.data.email });
     if (!p) {
