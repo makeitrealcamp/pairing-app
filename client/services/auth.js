@@ -2,7 +2,7 @@ import axios from "axios";
 
 class Auth {
   constructor() {
-    this.token = localStorage.getItem("auth_token");
+    this.token = global.localStorage.getItem("auth_token");
   }
 
   isAuthenticated() {

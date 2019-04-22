@@ -5,7 +5,6 @@ const { requireUser } = require('./middlewares');
 const auth = require("./controllers/auth");
 const sessions = require("./controllers/sessions");
 const assistances = require("./controllers/assistances");
-const clients = require("./clients");
 
 module.exports = (io) => {
   router.get("/auth/github", auth.githubAuth);
@@ -28,7 +27,6 @@ module.exports = (io) => {
       const decoded = await jwt.verify(token, process.env.SECRET_KEY || "secret key");
       if (decoded.user) {
         socket.join(`assistance-${assistanceId}`);
-        // clients.push({ participantId: decoded.user, socket });
       }
     });
   });

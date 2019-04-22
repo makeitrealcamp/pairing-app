@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const Session = require("../models/Session");
 const Assistance = require("../models/Assistance");
-const clients = require("../clients");
 
 module.exports.create = async (req, res, next) => {
   try {

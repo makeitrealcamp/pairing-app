@@ -12,7 +12,6 @@ describe('GET /auth/github', () => {
 
   test('responds with correct location', async () => {
     const response = await request(app).get('/auth/github');
-    console.log(response.headers);
     expect(response.headers.location).toMatch(/^https:\/\/github.com\/login\/oauth\/authorize/)
   });
 });
