@@ -14,7 +14,13 @@ const schema = mongoose.Schema({
     required: [true, "is required"]
   },
   avatarUrl: String,
-  name: String
+  name: String,
+  admin: {
+    type: Boolean,
+    default: false
+  }
 });
+
+schema.index({ name: 'text', email: 'text', github: 'text'});
 
 module.exports = mongoose.model("Participant", schema);

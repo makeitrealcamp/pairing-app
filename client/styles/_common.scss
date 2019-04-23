@@ -39,16 +39,26 @@ header.main-header {
 }
 
 .content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: $bg;
   color: $font_color;
   text-shadow: -1px -1px #111;
+  padding-top: 70px;
+
+  .page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    overflow: scroll;
+  }
+
+  .page-common {
+    margin: auto;
+    padding: 60px 0;
+  }
 
   a {
     color: $link_color;
-    // font-weight: 300;
     text-decoration: none;
     text-shadow: none;
 
@@ -88,5 +98,19 @@ header.main-header {
   &.alert-error {
     background-color: #db2525;
     color: white;
+  }
+}
+
+.pagination {
+  margin-top: 15px;
+  text-align: right;
+
+  > a {
+    padding: 5px;
+
+    &.page.current {
+      color: white;
+      font-weight: bold;
+    }
   }
 }

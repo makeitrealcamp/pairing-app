@@ -41,7 +41,7 @@ export default class Feedback extends React.Component {
 
     const feedback = this.state.assistance.feedback;
     return (
-      <div className="feedback-page">
+      <div className="page-common feedback-page">
         <div className="form-group rating">
           {Array.apply(null, { length: feedback.rating }).map((e, i) => (
             <FontAwesomeIcon key={i} icon={['fas', 'star']} onClick={() => this.rate(i + 1)} className="rating-star highlighted" />
@@ -52,17 +52,17 @@ export default class Feedback extends React.Component {
           ))}
         </div>
         <FormGroup error={this.state.errors.class}>
-          <label for="feedback-class">¿Cómo te pareció la clase de hoy?</label>
+          <label htmlFor="feedback-class">¿Cómo te pareció la clase de hoy?</label>
           <textarea id="feedback-class" onChange={this.onClassInputChange} rows="3" value={ feedback.class } autoFocus></textarea>
         </FormGroup>
         <div className="form-group">
-        <label for="feedback-exercises">¿Cómo te parecieron los ejercicios?</label>
+        <label htmlFor="feedback-exercises">¿Cómo te parecieron los ejercicios?</label>
           <textarea onChange={this.onExercisesInputChange} rows="3" value={ feedback.exercises }></textarea>
         </div>
         {
-          this.state.assistance.status == "paired" ?
+          this.state.assistance.partner ?
             <div className="form-group">
-              <label for="feedback-partner">¿Cómo te fue con tu pareja de programación?</label>
+              <label htmlFor="feedback-partner">¿Cómo te fue con tu pareja de programación?</label>
               <textarea onChange={this.onPartnerInputChange} rows="3" value={ feedback.partner }></textarea>
             </div>
           :

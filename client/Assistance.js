@@ -64,7 +64,7 @@ export default class Assistance extends React.Component {
 
   renderEnqueued() {
     return (
-      <div style={{ textAlign: "center" }} className="assistance-page">
+      <div style={{ textAlign: "center" }} className=" page-common assistance-page">
         <img src="loading.svg" />
         <p style={{ fontSize: "1.2rem", marginTop: "40px" }}>Iniciando sesión de pair programming ... </p>
       </div>
@@ -73,7 +73,7 @@ export default class Assistance extends React.Component {
 
   renderNotPaired() {
     return (
-      <div className="assistance-page">
+      <div className="page-common assistance-page">
         <div className="text-center">
           <p className="intro">No fue posible encontrar una pareja de trabajo. Puedes <a href="#" onClick={this.solo.bind(this)}>trabajar individualmente</a> o <a href="/assistance" onClick={this.retry}>intentarlo nuevamente</a></p>
         </div>
@@ -83,7 +83,7 @@ export default class Assistance extends React.Component {
 
   renderPaired() {
     return (
-      <div className="assistance-page">
+      <div className="page-common assistance-page">
         <div className="paired">
           <div>
             <p className="intro">Tu pareja de trabajo para esta sesión es:</p>
@@ -104,7 +104,7 @@ export default class Assistance extends React.Component {
 
   renderSolo() {
     return (
-      <div className="assistance-page">
+      <div className="page-common assistance-page">
         <p className="intro">Estás en una sesión individual</p>
         <p className="footnote">Cuando termines los ejercicios no olvides <Link to={`/assistances/${this.state.assistance._id}/feedback`}>calificar la sesión y dejar retroalimentación</Link>.</p>
       </div>

@@ -1,11 +1,12 @@
 const jwt = require("jsonwebtoken");
 const express = require('express');
 const router = express.Router();
-const { requireUser } = require('./middlewares');
+const { requireUser, requireAdmin } = require('./middlewares');
 const auth = require("./controllers/auth");
 const sessions = require("./controllers/sessions");
 const assistances = require("./controllers/assistances");
 const Message = require('./models/Message');
+const participants = require("./controllers/participants");
 
 module.exports = (io) => {
   router.get("/auth/github", auth.githubAuth);
@@ -19,6 +20,9 @@ module.exports = (io) => {
   router.patch("/assistances/:assistanceId", requireUser, assistances.update);
   router.patch("/assistances/:assistanceId/enqueue", requireUser, assistances.enqueue);
   router.patch("/assistances/:assistanceId/dequeue", requireUser, assistances.dequeue);
+
+  router.get("/participant", requireUser, participants.show);
+  router.get("/participants", requireUser, requireAdmin, participants.findAll);
 
   io.on("connection", socket => {
     socket.on("subscribe", async data => {

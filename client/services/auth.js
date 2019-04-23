@@ -3,10 +3,32 @@ import axios from "axios";
 class Auth {
   constructor() {
     this.token = global.localStorage.getItem("auth_token");
+    this.participant();
   }
 
   isAuthenticated() {
     return this.token !== null;
+  }
+
+  async participant() {
+    if (this._participant) {
+      return participant;
+    }
+
+    if (!this.token) {
+      return null;
+    }
+
+    try {
+      this._participant = await axios.get("/participant", {
+        headers: { "Authorization": this.token }
+      });
+      return this._participant;
+    } catch (err) {
+      console.error(err);
+      this.logout();
+      return null;
+    }
   }
 
   async withCode(code) {
@@ -23,6 +45,7 @@ class Auth {
 
   logout() {
     this.token = null;
+    this._participant = null;
     localStorage.removeItem("auth_token")
   }
 }

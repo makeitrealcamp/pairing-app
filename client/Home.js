@@ -43,7 +43,7 @@ export default class Home extends React.Component {
 
   renderPage() {
     return (
-      <div className="home-page">
+      <div className="page-common home-page">
         { this.state.session ?
           <div className="session">
             <h1>{ this.state.session.name }</h1>
