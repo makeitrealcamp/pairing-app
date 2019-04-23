@@ -2,6 +2,27 @@ const axios = require("axios");
 const jwt = require("jsonwebtoken");
 const Participant = require("../models/Participant");
 
+// Helper method
+const loadUserFromGithub = async token => {
+  let res = await axios.get("https://api.github.com/user?access_token=" + token);
+  const user = {
+    email: res.data.email,
+    github: res.data.login,
+    name: res.data.name,
+    avatarUrl: res.data.avatar_url
+  }
+
+  if (!user.email) {
+    res = await axios.get("https://api.github.com/user/emails?access_token=" + token);
+    console.log(`Github user ${user.github} has no public email, finding email ...`);
+    console.log(res.data);
+    user.email = res.data.find(g => g.primary).email;
+    console.log(`Found email for user ${user.github}: ${user.email}`);
+  }
+
+  return user;
+}
+
 module.exports.githubAuth = (req, res) => {
   res.redirect(`https://github.com/login/oauth/authorize?client_id=${process.env.OAUTH_CLIENT_ID}&scope=user:email`);
 }
@@ -17,18 +38,11 @@ module.exports.githubToken = async (req, res, next) => {
     }, { headers: { "Accept": "application/json" } });
 
     const accessToken = r1.data.access_token;
-    const r2 = await axios.get("https://api.github.com/user?access_token=" + accessToken);
-    console.log(r2.data);
+    const user = await loadUserFromGithub(accessToken);
 
-    let p = await Participant.findOne({ email: r2.data.email });
+    let p = await Participant.findOne({ github: user.github });
     if (!p) {
-      const data = r2.data;
-      p = await Participant.create({
-        email: data.email,
-        github: data.login,
-        name: data.name,
-        avatarUrl: data.avatar_url
-      });
+      p = await Participant.create(user);
     }
     const token = await jwt.sign({ user: p._id }, process.env.SECRET_KEY || "secret key");
 
