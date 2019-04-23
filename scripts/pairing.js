@@ -4,6 +4,7 @@ const io = require('socket.io-emitter')(process.env.REDIS_URL || "redis://127.0.
 const mongoose = require("mongoose");
 require("../server/models/Participant");
 const Assistance = require("../server/models/Assistance");
+const Chat = require("../server/models/Chat");
 
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/pairing', { useNewUrlParser: true });
 
@@ -21,13 +22,17 @@ const dequeue = async () => {
 }
 
 const pair = async (a1, a2) => {
+  const chat = await Chat.create({});
+
   a1.status = "paired";
   a1.partner = a2.participant;
+  a1.chat = chat._id;
   a1.enqueuedAt = null;
   await a1.save();
 
   a2.status = "paired";
   a2.partner = a1.participant;
+  a2.chat = chat._id;
   a1.enqueuedAt = null;
   await a2.save();
 

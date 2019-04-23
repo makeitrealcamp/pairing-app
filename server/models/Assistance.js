@@ -24,8 +24,15 @@ const schema = mongoose.Schema({
     class: String,
     exercises: String,
     partner: String
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  chat: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Chat'
   }
-
 });
 
 module.exports = mongoose.model("Assistance", schema);

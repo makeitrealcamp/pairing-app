@@ -19,7 +19,56 @@
 }
 
 .assistance-page {
-  max-width: 500px;
+  max-width: 850px;
+
+  .paired {
+    display: flex;
+
+    .chat {
+      position: relative;
+      background: #2F3336;
+      min-width: 380px;
+      margin-left: 50px;
+      border: 1px solid darken($font_color, 15%);
+      // border-radius: 5px;
+      box-shadow: 3px 3px 10px #111;
+
+      .header {
+        font-size: 0.9rem;
+        padding: 10px;
+        border-bottom: 1px solid darken($font_color, 15%);
+      }
+
+      .messages {
+        padding: 10px 10px 40px;
+        height: 400px;
+        overflow-y: scroll;
+      }
+
+      .message {
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+
+        .participant { font-weight: bold; }
+
+        .text {
+          margin-top: 5px;
+        }
+      }
+
+      textarea {
+        position: absolute;
+        bottom: 0;
+        background: #2F3336;
+        color: $font_color;
+        font-size: 1rem;
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-top: 1px solid darken($font_color, 15%);
+      }
+    }
+  }
 
   .intro {
     font-size: 1.2rem;

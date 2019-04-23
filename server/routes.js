@@ -5,6 +5,7 @@ const { requireUser } = require('./middlewares');
 const auth = require("./controllers/auth");
 const sessions = require("./controllers/sessions");
 const assistances = require("./controllers/assistances");
+const Message = require('./models/Message');
 
 module.exports = (io) => {
   router.get("/auth/github", auth.githubAuth);
@@ -21,13 +22,25 @@ module.exports = (io) => {
 
   io.on("connection", socket => {
     socket.on("subscribe", async data => {
-      const assistanceId = data.assistanceId;
-      const token = data.token;
+      socket.join(`assistance-${data.assistanceId}`);
+    });
 
-      const decoded = await jwt.verify(token, process.env.SECRET_KEY || "secret key");
-      if (decoded.user) {
-        socket.join(`assistance-${assistanceId}`);
-      }
+    socket.on("chat", async data => {
+      socket.join(`chat-${data.chatId}`);
+
+      const messages = await Message.find({ chat: data.chatId }).populate("participant");
+      messages.forEach(m => {
+        socket.emit("message", { participant: m.participant, text: m.text });
+      });
+    });
+
+    socket.on("message", async data => {
+      await Message.create({
+        chat: data.chatId,
+        participant: data.participant._id,
+        text: data.text
+      });
+      socket.broadcast.to(`chat-${data.chatId}`).emit("message", { participant: data.participant, text: data.text });
     });
   });
 

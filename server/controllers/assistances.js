@@ -12,7 +12,7 @@ module.exports.create = async (req, res, next) => {
       enqueuedAt: new Date()
     });
 
-    res.json(assistance);
+    res.json(assistance.populate("participant"));
   } catch (e) {
     next(e);
   }
@@ -20,7 +20,9 @@ module.exports.create = async (req, res, next) => {
 
 module.exports.show = async (req, res, next) => {
   try {
-    const assistance = await Assistance.findById(req.params.id).populate("partner");
+    const assistance = await Assistance.findById(req.params.id)
+        .populate("partner")
+        .populate("participant");
     if (assistance) {
       res.json(assistance);
     } else {
@@ -36,7 +38,7 @@ module.exports.findBySession = async (req, res, next) => {
     const assistance = await Assistance.findOne({
       session: new ObjectId(req.params.sessionId),
       participant: new ObjectId(res.locals.user._id)
-    }).populate("partner");
+    }).populate("partner").populate("participant");
     if (assistance) {
       res.json(assistance);
     } else {

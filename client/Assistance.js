@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import Loading from "./Loading";
+import Chat from "./Chat";
 import auth from "./services/auth";
 import sessions from "./services/sessions";
 import assistances from "./services/assistances";
@@ -23,6 +24,13 @@ export default class Assistance extends React.Component {
       if (assistance.status === "enqueued") {
         this.configureWebSocket(assistance);
         this.configureTimer();
+
+        // reload assistance in 5 secods
+        setTimeout(() => {
+          assistances.findById(assistance.id).then(asssistance => {
+            this.setState({ assistance });
+          })
+        }, 5000)
       }
       this.setState({ loading: false, assistance });
     } else {
@@ -76,15 +84,20 @@ export default class Assistance extends React.Component {
   renderPaired() {
     return (
       <div className="assistance-page">
-        <p className="intro">Tu pareja de trabajo para esta sesión es:</p>
-        <div className="partner">
-          <img src={this.state.assistance.partner.avatarUrl} />
-          <div className="partner-info">
-            <span className="partner-name">{this.state.assistance.partner.name}</span>
-            <span className="partner-github">{this.state.assistance.partner.github}</span>
+        <div className="paired">
+          <div>
+            <p className="intro">Tu pareja de trabajo para esta sesión es:</p>
+            <div className="partner">
+              <img src={this.state.assistance.partner.avatarUrl} />
+              <div className="partner-info">
+                <span className="partner-name">{this.state.assistance.partner.name}</span>
+                <span className="partner-github">{this.state.assistance.partner.github}</span>
+              </div>
+            </div>
+            <p className="footnote">Cuando termines los ejercicios no olvides <Link to={`/assistances/${this.state.assistance._id}/feedback`}>calificar la sesión y dejar retroalimentación</Link>.</p>
           </div>
+          <Chat assistance={this.state.assistance} />
         </div>
-        <p className="footnote">Cuando termines los ejercicios no olvides <Link to={`/assistances/${this.state.assistance._id}/feedback`}>calificar la sesión y dejar retroalimentación</Link>.</p>
       </div>
     );
   }
@@ -114,7 +127,7 @@ export default class Assistance extends React.Component {
       clearTimeout(this.timeout);
       this.setState({ assistance });
     });
-    socket.emit("subscribe", { assistanceId: assistance._id, token: auth.token });
+    socket.emit("subscribe", { assistanceId: assistance._id });
   }
 
   configureTimer() {

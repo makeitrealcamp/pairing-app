@@ -46,7 +46,7 @@ module.exports.githubToken = async (req, res, next) => {
     }
     const token = await jwt.sign({ user: p._id }, process.env.SECRET_KEY || "secret key");
 
-    res.json({ token: token });
+    res.json({ token: token, participant: p });
   } catch (e) {
     next(e);
   }
