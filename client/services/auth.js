@@ -20,9 +20,11 @@ class Auth {
     }
 
     try {
-      this._participant = await axios.get("/participant", {
+      const response = await axios.get("/participant", {
         headers: { "Authorization": this.token }
       });
+
+      this._participant = response.data;
       return this._participant;
     } catch (err) {
       console.error(err);
