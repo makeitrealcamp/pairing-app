@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import Loading from "./Loading";
 import Chat from "./Chat";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import auth from "./services/auth";
 import sessions from "./services/sessions";
 import assistances from "./services/assistances";
@@ -13,29 +14,32 @@ export default class Assistance extends React.Component {
 
     this.state = {
       loading: true,
-      assistance: null
+      session: null,
+      assistance: null,
+      showUnpairLink: false
     }
   }
 
   async componentDidMount() {
+    this.socket = await this.configureWebSocket();
     const session = await sessions.findActive();
     if (session) {
       const assistance = await this.findOrCreateAssistance(session);
       if (assistance.status === "enqueued") {
-        this.configureWebSocket(assistance);
         this.configureTimer();
-
-        // reload assistance in 5 secods
-        setTimeout(() => {
-          assistances.findById(assistance.id).then(asssistance => {
-            this.setState({ assistance });
-          })
-        }, 5000)
       }
-      this.setState({ loading: false, assistance });
+      const state = { loading: false, assistance, session }
+      if (assistance.status === "paired") {
+        state.showUnpairLink = true;
+      }
+      this.setState(state);
     } else {
       this.setState({ loading: false });
     }
+  }
+
+  componentWillUnmount() {
+    this.socket.disconnect();
   }
 
   render() {
@@ -94,7 +98,9 @@ export default class Assistance extends React.Component {
                 <span className="partner-github">{this.state.assistance.partner.github}</span>
               </div>
             </div>
+            {this.state.session.exercisesUrl ? <p className="footnote"><a href={this.state.session.exercisesUrl} target="_blank">Abrir los ejercicios&nbsp;<FontAwesomeIcon icon={['fas', 'external-link-alt']} /></a></p> : null}
             <p className="footnote">Cuando termines los ejercicios no olvides <Link to={`/assistances/${this.state.assistance._id}/feedback`}>calificar la sesión y dejar retroalimentación</Link>.</p>
+            {this.state.showUnpairLink ? <div className="notification">Si no te pudiste comunicar con tu pareja <a href="#" onClick={this.unpair.bind(this)}>haz click acá</a> para buscar nuevamente.</div> : null}
           </div>
           <Chat assistance={this.state.assistance} />
         </div>
@@ -121,13 +127,20 @@ export default class Assistance extends React.Component {
     return assistance;
   }
 
-  configureWebSocket(assistance) {
+  async configureWebSocket(assistance) {
     const socket = io();
-    socket.on('paired', assistance => {
+    socket.on('assistance-changed', assistance => {
       clearTimeout(this.timeout);
+      if (assistance.status === "paired") {
+        setTimeout(() => this.setState({ showUnpairLink: true }), 10000);
+      }
       this.setState({ assistance });
     });
-    socket.emit("subscribe", { assistanceId: assistance._id });
+
+    const participant = await auth.participant();
+    console.log("Participant Id", participant._id);
+    socket.emit("subscribe", { participantId: participant._id });
+    return socket;
   }
 
   configureTimer() {
@@ -147,5 +160,11 @@ export default class Assistance extends React.Component {
 
   retry() {
     window.location.reload();
+  }
+
+  async unpair(e) {
+    e.preventDefault();
+    const assistance = await assistances.enqueue(this.state.assistance);
+    this.setState({ assistance });
   }
 }

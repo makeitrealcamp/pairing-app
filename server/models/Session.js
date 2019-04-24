@@ -8,7 +8,8 @@ const schema = mongoose.Schema({
   open: {
     type: Boolean,
     required: [true, "is required"]
-  }
+  },
+  exercisesUrl: String
 });
 
 module.exports = mongoose.model("Session", schema);

@@ -26,7 +26,7 @@ module.exports = (io) => {
 
   io.on("connection", socket => {
     socket.on("subscribe", async data => {
-      socket.join(`assistance-${data.assistanceId}`);
+      socket.join(`participant-${data.participantId}`);
     });
 
     socket.on("chat", async data => {

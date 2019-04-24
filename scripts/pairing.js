@@ -36,8 +36,8 @@ const pair = async (a1, a2) => {
   a1.enqueuedAt = null;
   await a2.save();
 
-  io.to(`assistance-${a1._id}`).emit("paired", a1);
-  io.to(`assistance-${a2._id}`).emit("paired", a2);
+  io.to(`participant-${a1.participant._id}`).emit("assistance-changed", a1);
+  io.to(`participant-${a2.participant._id}`).emit("assistance-changed", a2);
 }
 
 const execute = async () => {
