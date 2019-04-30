@@ -1,6 +1,6 @@
 # Generador de parejas
 
-Este proyecto lo utilizamos en las clases masivas para generar parejas de forma aleatoria en las sesiones y que los estudiantes hagan pair programming.
+Este proyecto lo utilizamos en las clases masivas de Make it Real para generar parejas de forma aleatoria en las sesiones y que los estudiantes realicen los ejercicios en pair programming.
 
 # Requisitos
 
@@ -78,8 +78,9 @@ Este proyecto está construído con las siguientes tecnologías:
 * [Socket.io](https://socket.io/) es una librería para Web Sockets (tiempo real).
 * [MongoDB](https://www.mongodb.com/) es la base de datos principal.
 * [Redis](https://redis.io/) es una base de datos no estructurada que utilizamos para [Socket.io](https://socket.io/) y controlar el script que crea las parejas.
-* [React](https://reactjs.org/) es un framework para el front-end.
 * [JWT (JSON Web Tokens)](https://jwt.io/) para almacenar información del usuario en el front.
+* [React](https://reactjs.org/) es un framework para el front-end.
+* [SASS](https://sass-lang.com/) es un preprocesador de CSS.
 * [Webpack](https://webpack.js.org/) para generar los archivos JS y CSS finales.
 * [Jest](https://jestjs.io/) para las pruebas automatizadas.
 * [Enzyme](https://airbnb.io/enzyme/) para las pruebas de los componentes de React.
