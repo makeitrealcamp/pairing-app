@@ -21,20 +21,24 @@ export default class Assistance extends React.Component {
   }
 
   async componentDidMount() {
-    this.socket = await this.configureWebSocket();
-    const session = await sessions.findActive();
-    if (session) {
-      const assistance = await this.findOrCreateAssistance(session);
-      if (assistance.status === "enqueued") {
-        this.configureTimer();
+    try {
+      this.socket = await this.configureWebSocket();
+      const session = await sessions.findActive();
+      if (session) {
+        const assistance = await this.findOrCreateAssistance(session);
+        if (assistance.status === "enqueued") {
+          this.configureTimer();
+        }
+        const state = { loading: false, assistance, session }
+        if (assistance.status === "paired") {
+          state.showUnpairLink = true;
+        }
+        this.setState(state);
+      } else {
+        this.setState({ loading: false });
       }
-      const state = { loading: false, assistance, session }
-      if (assistance.status === "paired") {
-        state.showUnpairLink = true;
-      }
-      this.setState(state);
-    } else {
-      this.setState({ loading: false });
+    } catch (err) {
+      console.log(err);
     }
   }
 
@@ -68,9 +72,11 @@ export default class Assistance extends React.Component {
 
   renderEnqueued() {
     return (
-      <div style={{ textAlign: "center" }} className=" page-common assistance-page">
-        <img src="loading.svg" />
-        <p style={{ fontSize: "1.2rem", marginTop: "40px" }}>Iniciando sesión de pair programming ... </p>
+      <div className=" page-common assistance-page">
+        <div className="enqueued">
+          <img src="loading.svg" />
+          <p>Iniciando sesión de pair programming ... </p>
+        </div>
       </div>
     )
   }
@@ -138,7 +144,6 @@ export default class Assistance extends React.Component {
     });
 
     const participant = await auth.participant();
-    console.log("Participant Id", participant._id);
     socket.emit("subscribe", { participantId: participant._id });
     return socket;
   }

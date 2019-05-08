@@ -1,4 +1,5 @@
 import 'localstorage-polyfill';
+import 'jsdom-global/register';
 
 const Enzyme = require('enzyme');
 const EnzymeAdapter = require('enzyme-adapter-react-16');
