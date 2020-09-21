@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import Loading from "./Loading";
+import Loading from "components/general/Loading";
 import Alert from "./Alert";
 import auth from "./services/auth";
 import sessions from "./services/sessions";

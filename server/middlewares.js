@@ -20,15 +20,15 @@ const requireUser = async (req, res, next) => {
   }
 
   res.status(401).json({ error: "Not authorized" });
-}
+};
 
 const requireAdmin = async (req, res, next) => {
   if (!res.locals.user.admin) {
-    res.status(404).json({ error: "Not Found" })
+    res.status(404).json({ error: "Not Found" });
     return;
   }
 
   next();
-}
+};
 
 module.exports = { requireUser, requireAdmin };

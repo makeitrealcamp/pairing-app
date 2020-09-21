@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import Loading from "./Loading";
+import Loading from "components/general/Loading";
 import Chat from "./Chat";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import auth from "./services/auth";
