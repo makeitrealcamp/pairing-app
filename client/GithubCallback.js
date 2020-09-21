@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect } from "react-router-dom";
-import Loading from "./Loading";
+import Loading from "components/general/Loading";
 import queryString from "query-string";
 import auth from "./services/auth";
 

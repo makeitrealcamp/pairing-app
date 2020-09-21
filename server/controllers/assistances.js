@@ -1,35 +1,48 @@
-const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
-const Session = require("../models/Session");
-const Assistance = require("../models/Assistance");
+const mongoose = require('mongoose')
+const ObjectId = mongoose.Types.ObjectId
+const Session = require('../models/Session')
+const Assistance = require('../models/Assistance')
+
+module.exports.getAll = async (req, res, next) => {
+  const session = req.params.sessionId
+
+  try {
+    const assistances = await Assistance.find({ session }, { status: 1, feedback: 1 })
+      .populate('participant',{ email: 1, github: 1 })
+
+    res.json(assistances)
+  } catch (e) {
+    next(e)
+  }
+}
 
 module.exports.create = async (req, res, next) => {
   try {
-    const session = await Session.findOne({ _id: req.params.sessionId });
+    const session = await Session.findOne({ _id: req.params.sessionId })
     const assistance = await Assistance.create({
       session: session,
       participant: res.locals.user,
-      enqueuedAt: new Date()
-    });
+      enqueuedAt: new Date(),
+    })
 
-    res.json(assistance.populate("participant"));
+    res.json(assistance.populate('participant'))
   } catch (e) {
-    next(e);
+    next(e)
   }
 }
 
 module.exports.show = async (req, res, next) => {
   try {
     const assistance = await Assistance.findById(req.params.id)
-        .populate("partner")
-        .populate("participant");
+      .populate('partner')
+      .populate('participant')
     if (assistance) {
-      res.json(assistance);
+      res.json(assistance)
     } else {
-      res.status(404).json({ error: "Not Found" });
+      res.status(404).json({ error: 'Not Found' })
     }
   } catch (e) {
-    next(e);
+    next(e)
   }
 }
 
@@ -37,42 +50,44 @@ module.exports.findBySession = async (req, res, next) => {
   try {
     const assistance = await Assistance.findOne({
       session: new ObjectId(req.params.sessionId),
-      participant: new ObjectId(res.locals.user._id)
-    }).populate("partner").populate("participant");
+      participant: new ObjectId(res.locals.user._id),
+    })
+      .populate('partner')
+      .populate('participant')
     if (assistance) {
-      res.json(assistance);
+      res.json(assistance)
     } else {
-      res.status(404).json({ error: "Not Found" });
+      res.status(404).json({ error: 'Not Found' })
     }
   } catch (e) {
-    next(e);
+    next(e)
   }
-};
+}
 
 const update = async (req, res, next, data) => {
   try {
-    const id = new ObjectId(req.params.assistanceId);
-    await Assistance.updateOne({ _id: id }, data);
+    const id = new ObjectId(req.params.assistanceId)
+    await Assistance.updateOne({ _id: id }, data)
 
-    const assistance = await Assistance.findOne({ _id: id });
+    const assistance = await Assistance.findOne({ _id: id })
     if (assistance) {
-      res.json(assistance);
+      res.json(assistance)
     } else {
-      res.status(404).json({ error: "Not Found" });
+      res.status(404).json({ error: 'Not Found' })
     }
   } catch (e) {
-    next(e);
+    next(e)
   }
 }
 
 module.exports.update = async (req, res, next) => {
-  await update(req, res, next, req.body);
-};
+  await update(req, res, next, req.body)
+}
 
 module.exports.enqueue = async (req, res, next) => {
-  await update(req, res, next, { status: "enqueued", enqueuedAt: new Date() });
-};
+  await update(req, res, next, { status: 'enqueued', enqueuedAt: new Date() })
+}
 
 module.exports.dequeue = async (req, res, next) => {
-  await update(req, res, next, { status: "not_paired", enqueuedAt: null });
-};
+  await update(req, res, next, { status: 'not_paired', enqueuedAt: null })
+}

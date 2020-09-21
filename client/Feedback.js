@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Loading from "./Loading";
+import Loading from "components/general/Loading";
 import FormGroup from "./FormGroup";
 import Alert from "./Alert";
 import assistances from "./services/assistances";

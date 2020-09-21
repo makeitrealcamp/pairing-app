@@ -1,17 +1,15 @@
-const path = require('path');
-const autoprefixer = require('autoprefixer');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require('path')
+const autoprefixer = require('autoprefixer')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-const NODE_ENV = process.env.NODE_ENV;
-const isProd = NODE_ENV === 'production';
+const NODE_ENV = process.env.NODE_ENV
+const isProd = NODE_ENV === 'production'
 
 module.exports = {
   entry: {
-    'app': [
-      path.resolve(__dirname, 'client/index.js')
-    ]
+    app: [path.resolve(__dirname, 'client/index.js')],
   },
 
   mode: 'development',
@@ -19,7 +17,7 @@ module.exports = {
   output: {
     filename: 'js/[name].js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
+    publicPath: '/',
   },
 
   module: {
@@ -28,7 +26,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         include: path.resolve(__dirname, 'client'),
-        loader: 'babel-loader'
+        loader: 'babel-loader',
       },
       // SCSS files
       {
@@ -39,34 +37,46 @@ module.exports = {
             {
               loader: 'css-loader',
               options: {
-                'sourceMap': true,
-                'importLoaders': 1
-              }
+                sourceMap: true,
+                importLoaders: 1,
+              },
             },
             {
               loader: 'postcss-loader',
               options: {
-                plugins: () => [ autoprefixer ]
-              }
+                plugins: () => [autoprefixer],
+              },
             },
-            'sass-loader'
-          ]
-        })
-      }
-    ]
+            'sass-loader',
+          ],
+        }),
+      },
+    ],
   },
 
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'client/index.html'),
-      inject: 'body'
+      inject: 'body',
     }),
     new ExtractTextPlugin({
       filename: 'css/[name].[hash].css',
-      disable: !isProd
+      disable: !isProd,
     }),
-    new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, 'client/public')
-    }])
-  ]
-};
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, 'client/public'),
+      },
+    ]),
+  ],
+
+  resolve: {
+    extensions: ['.js', '.jsx'],
+    alias: {
+      components: path.resolve(__dirname, 'client', 'components'),
+      services: path.resolve(__dirname, 'client', 'services'),
+      styles: path.resolve(__dirname, 'client', 'styles'),
+      views: path.resolve(__dirname, 'client', 'views'),
+    }
+  },
+}

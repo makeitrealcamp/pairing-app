@@ -11,7 +11,9 @@
 }
 
 .home-page {
-  .session { text-align: center; }
+  .session {
+    text-align: center;
+  }
   h1 {
     font-size: 1.2rem;
     margin-bottom: 60px;
@@ -22,8 +24,8 @@
   max-width: 850px;
 
   .enqueued p {
-    font-size: 1.2rem,
-    margin-top: 40px
+    font-size: 1.2rem;
+    margin-top: 40px;
   }
 
   .paired {
@@ -31,7 +33,7 @@
 
     .chat {
       position: relative;
-      background: #2F3336;
+      background: #2f3336;
       min-width: 380px;
       margin-left: 50px;
       border: 1px solid darken($font_color, 15%);
@@ -54,7 +56,9 @@
         margin-bottom: 20px;
         font-size: 0.9rem;
 
-        .participant { font-weight: bold; }
+        .participant {
+          font-weight: bold;
+        }
 
         .text {
           margin-top: 5px;
@@ -64,7 +68,7 @@
       textarea {
         position: absolute;
         bottom: 0;
-        background: #2F3336;
+        background: #2f3336;
         color: $font_color;
         font-size: 1rem;
         width: 100%;
@@ -118,7 +122,7 @@
 
   .notification {
     opacity: 0.7;
-    background: #2F3336;
+    background: #2f3336;
     font-size: 0.9rem;
     padding: 7px;
     margin-top: 30px;
@@ -134,7 +138,10 @@
     margin-bottom: 25px;
 
     &.has-error {
-      textarea, input[type=text] { border-color: red; }
+      textarea,
+      input[type="text"] {
+        border-color: red;
+      }
     }
 
     .error-help {
@@ -157,7 +164,9 @@
       font-size: 1.8rem;
       cursor: pointer;
 
-      &.highlighted { color: $link_color; }
+      &.highlighted {
+        color: $link_color;
+      }
     }
   }
 
@@ -170,7 +179,7 @@
   }
 
   textarea {
-    background: #2F3336;
+    background: #2f3336;
     color: $font_color;
     font-size: 1rem;
     width: 600px;
@@ -199,7 +208,7 @@
     margin-bottom: 10px;
 
     input.search {
-      background: #2F3336;
+      background: #2f3336;
       color: $font_color;
       font-size: 1rem;
       padding: 10px;
@@ -209,21 +218,20 @@
     }
   }
 
-
   table {
     background: white;
     border-collapse: collapse;
     text-shadow: none;
     color: #333;
 
-    th, td {
+    th,
+    td {
       border: 1px solid #ccc;
       padding: 5px 10px;
       margin: 0;
 
       img {
         width: 60px;
-
       }
     }
   }
