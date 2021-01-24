@@ -24,11 +24,9 @@ module.exports = (io) => {
   router.get('/participant', requireUser, participants.show)
 
   // Admin routes
-  router.get('/sessions', sessions.getAll)
-  router.get('/participants', participants.findAll)
-  router.get('/sessions/:sessionId/assistances', //requireAdmin, //requireUser,
-    assistances.getAll
-  )
+  router.get('/sessions', requireUser, requireAdmin, sessions.getAll)
+  router.get('/participants', requireUser, requireAdmin, participants.findAll)
+  router.get('/sessions/:sessionId/assistances', requireUser, requireAdmin, assistances.getAll)
 
   io.on('connection', (socket) => {
     socket.on('subscribe', async (data) => {

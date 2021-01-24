@@ -14,15 +14,19 @@
   "license": "ISC",
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.8.1",
-    "axios": "^0.18.0",
+    "@tailwindcss/postcss7-compat": "^2.0.2",
+    "autoprefixer": "^9.8.6",
+    "axios": "^0.21.1",
     "express": "^4.16.4",
     "faker": "^4.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.4.22",
     "nodemon": "^1.18.10",
+    "postcss": "^7.0.35",
     "socket.io": "^2.2.0",
     "socket.io-emitter": "^3.1.1",
-    "socket.io-redis": "^5.2.0"
+    "socket.io-redis": "^5.2.0",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
@@ -32,7 +36,6 @@
     "@fortawesome/free-regular-svg-icons": "^5.8.1",
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
-    "autoprefixer": "^9.5.1",
     "babel-jest": "^24.7.1",
     "babel-loader": "^8.0.5",
     "babel-polyfill": "^6.26.0",

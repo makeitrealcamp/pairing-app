@@ -7,8 +7,9 @@ module.exports.getAll = async (req, res, next) => {
   const session = req.params.sessionId
 
   try {
-    const assistances = await Assistance.find({ session }, { status: 1, feedback: 1 })
-      .populate('participant',{ email: 1, github: 1 })
+    const assistances = await Assistance
+      .find({ session }, { status: 1, feedback: 1 })
+      .populate('participant',{ name: 1, github: 1 })
 
     res.json(assistances)
   } catch (e) {
