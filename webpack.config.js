@@ -1,4 +1,5 @@
 const path = require('path')
+const tailwindcss = require('tailwindcss')
 const autoprefixer = require('autoprefixer')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
