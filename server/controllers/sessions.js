@@ -16,7 +16,7 @@ module.exports.open = async (req, res, next) => {
 
 module.exports.getAll = async (req, res, next) => {
   try {
-    const sessions = await Session.find({}, ).sort({ _id: -1 })
+    const sessions = await Session.find({}).sort({ _id: -1 })
 
     const result = await Promise.all(
       sessions.map(async (session) => {
@@ -40,6 +40,33 @@ module.exports.getAll = async (req, res, next) => {
     } else {
       res.status(404).json({ error: 'Not Found' })
     }
+  } catch (e) {
+    next(e)
+  }
+}
+
+module.exports.create = async (req, res, next) => {
+  try {
+    let session = await Session.findOne({ open: true })
+    if (session) return res.status(422).json({ error: 'Current Active Session' })
+
+    session = await Session.create({ ...req.body, open: true });
+
+    if (session) {
+      res.status(204).json('Session Created')
+    } else {
+      res.status(422).json({ error: 'Unprocessable Entity' })
+    }
+  } catch (e) {
+    next(e)
+  }
+}
+
+module.exports.closeSession = async (req, res, next) => {
+  try {
+    await Session.updateOne({ open: true }, { $set: { open: false } })
+
+    res.status(204).json('Session Closed')
   } catch (e) {
     next(e)
   }

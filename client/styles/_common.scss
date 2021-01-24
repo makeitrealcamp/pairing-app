@@ -99,6 +99,11 @@ header.main-header {
     background-color: #db2525;
     color: white;
   }
+
+  &.alert-success {
+    background-color: #28a745;
+    color: white;
+  }
 }
 
 .pagination {

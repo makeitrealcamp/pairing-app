@@ -24,8 +24,9 @@ import Message from './Message'
 import Participants from './Participants'
 // New Style
 import AdminRoute from './components/admin/AdminRoute'
-import AdminSessions from './views/admin/Sessions'
-import AdminParticipants from './views/admin/Assistances'
+import AdminSessions from 'views/admin/Sessions'
+import AdminSessionsNew from 'views/admin/SessionsNew'
+import AdminParticipants from 'views/admin/Assistances'
 
 import NotFound from 'components/general/NotFound'
 
@@ -57,6 +58,7 @@ const App = () => {
               {/* Admin Routes */}
               <AdminRoute exact path="/admin/participants" component={Participants} />
               <AdminRoute exact path="/admin/sessions" component={AdminSessions} />
+              <AdminRoute exact path="/admin/sessions/new" component={AdminSessionsNew} />
               <AdminRoute exact path="/admin/sessions/:id/assistances" component={AdminParticipants} />
 
               <Route component={NotFound} />

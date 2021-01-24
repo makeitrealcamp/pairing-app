@@ -24,9 +24,12 @@ module.exports = (io) => {
   router.get('/participant', requireUser, participants.show)
 
   // Admin routes
-  router.get('/sessions', requireUser, requireAdmin, sessions.getAll)
   router.get('/participants', requireUser, requireAdmin, participants.findAll)
+
+  router.get('/sessions', requireUser, requireAdmin, sessions.getAll)
   router.get('/sessions/:sessionId/assistances', requireUser, requireAdmin, assistances.getAll)
+  router.post('/sessions', requireUser, requireAdmin, sessions.create)
+  router.patch('/sessions/close', requireUser, requireAdmin, sessions.closeSession)
 
   io.on('connection', (socket) => {
     socket.on('subscribe', async (data) => {
