@@ -35,7 +35,7 @@ export default class AdminRoute extends React.Component {
       <Route
         {...rest}
         render={(props) =>
-            !this.state.authorized ? (
+            this.state.authorized ? (
             <Component {...props} />
           ) : this.state.loading ? (
             <Loading />

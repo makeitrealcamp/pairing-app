@@ -56,7 +56,7 @@ export default class Feedback extends React.Component {
           <textarea id="feedback-class" onChange={this.onClassInputChange} rows="3" value={ feedback.class } autoFocus></textarea>
         </FormGroup>
         <div className="form-group">
-        <label htmlFor="feedback-exercises">¿Cómo te parecieron los ejercicios?</label>
+         <label htmlFor="feedback-exercises">¿Cómo te parecieron los ejercicios?</label>
           <textarea onChange={this.onExercisesInputChange} rows="3" value={ feedback.exercises }></textarea>
         </div>
         {

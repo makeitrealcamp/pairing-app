@@ -208,7 +208,7 @@
 .participants-page {
   .searchForm {
     text-align: right;
-    margin-bottom: 10px;
+    margin: 10px;
 
     input.search {
       background: #2f3336;
@@ -218,6 +218,15 @@
       width: 350px;
       border: 1px solid darken($font_color, 15%);
       border-radius: 5px;
+    }
+  }
+
+  .session-actions {
+    display: flex;
+    justify-content: center;
+
+    .btn {
+      margin-bottom: 20px;
     }
   }
 
@@ -240,3 +249,36 @@
   }
 }
 
+.session-form {
+  width: 400px;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    input {
+      background: #2f3336;
+      color: $font_color;
+      font-size: 1rem;
+      padding: 10px;
+      border: 1px solid darken($font_color, 15%);
+      border-radius: 5px;
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 20px;
+
+    a {
+      font-size: 0.8em;
+    }
+
+    button {
+      margin-left: 15px;
+      padding: 7px 25px;
+      background: transparent;
+    }
+  }
+}
