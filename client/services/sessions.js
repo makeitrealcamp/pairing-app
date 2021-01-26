@@ -1,69 +1,36 @@
-import axios from 'axios'
+import axios from '../axios'
 import auth from './auth'
 
 class Sessions {
   async getAll() {
-    try {
-      const response = await axios.get('/sessions', {
-        headers: { Authorization: auth.token },
-      })
-
-      return response.data
-    } catch (err) {
-      if (err.response.status == 404) return null
-
-      handleUnauthorized(err)
-    }
+    const response = await axios.get('/sessions')
+    return response.data
   }
 
   async create(data) {
     try {
-      const response = await axios.post('/sessions',
-        data, { headers: { Authorization: auth.token }
-      })
-
+      const response = await axios.post('/sessions', data)
       return response.data
     } catch (err) {
-      if (err.response.status == 404) return null
-
-      handleUnauthorized(err)
+      if (err.response.status == 409) throw new Error("Can't create session until active session is closed")
+      if (err.response.status == 422) throw new Error(`Server rejected request`)
+      throw err
     }
   }
 
   async findActive() {
     try {
-      const response = await axios.get('/sessions/open', {
-        headers: { Authorization: auth.token },
-      })
-
+      const response = await axios.get('/sessions/open')
       return response.data
     } catch (err) {
       if (err.response.status == 404) return null
-
-      handleUnauthorized(err)
+      throw err
     }
   }
 
   async closeActive() {
-    try {
-      const response = await axios.patch('/sessions/close', {},
-        { headers: { Authorization: auth.token } }
-      )
-
-      return response.data
-    } catch (err) {
-      if (err.response.status == 404) return null
-
-      handleUnauthorized(err)
-    }
+    await axios.patch('/sessions/close', {})
   }
 }
 
 export default new Sessions()
-
-function handleUnauthorized(err) {
-  if (err.response.status == 401) {
-    auth.logout()
-    throw new Error('Authentication failed')
-  }
-}
