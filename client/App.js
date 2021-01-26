@@ -40,7 +40,7 @@ const App = () => {
   return (
     <>
       <header className="main-header">
-        <span className="brand">Curso básico de JavaScript</span>
+        <span className="brand">Curso básico de Python</span>
         <img src="/logo-white.png" />
       </header>
 
