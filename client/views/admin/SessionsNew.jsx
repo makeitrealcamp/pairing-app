@@ -14,6 +14,7 @@ export default class AdminSessionsNew extends React.Component {
     };
 
     this.onNameChange = this.onNameChange.bind(this);
+    this.onUrlChange = this.onUrlChange.bind(this);
     this.submit = this.submit.bind(this);
   }
 

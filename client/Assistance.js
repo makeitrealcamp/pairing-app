@@ -19,6 +19,7 @@ export default class Assistance extends React.Component {
       session: null,
       assistance: null,
       showUnpairLink: false,
+      showAbandoned: false,
       timeoutSeconds: TIMEOUT
     }
   }
@@ -110,6 +111,7 @@ export default class Assistance extends React.Component {
             {this.state.session.exercisesUrl ? <p className="footnote"><a href={this.state.session.exercisesUrl} target="_blank">Abrir los ejercicios&nbsp;<FontAwesomeIcon icon={['fas', 'external-link-alt']} /></a></p> : null}
             <p className="footnote">Cuando termines los ejercicios no olvides <Link to={`/assistances/${this.state.assistance._id}/feedback`}>calificar la sesión y dejar retroalimentación</Link>.</p>
             {this.state.showUnpairLink ? <div className="notification">Si no te pudiste comunicar con tu pareja <a href="#" onClick={this.unpair.bind(this)}>haz click acá</a> para buscar nuevamente.</div> : null}
+            {this.state.showAbandoned ? <div className="notification-alert">Tu pareja ha abandonado la sesión. <a href="#" onClick={this.unpair.bind(this)}>haz click acá</a> para buscar nuevamente.</div> : null}
           </div>
           <Chat assistance={this.state.assistance} />
         </div>
@@ -146,6 +148,9 @@ export default class Assistance extends React.Component {
       }
       this.setState({ assistance, timeoutSeconds: TIMEOUT });
     });
+    socket.on('partner-abandoned', () => {
+      this.setState({ showAbandoned: true })
+    })
 
     const participant = await auth.participant();
     socket.emit("subscribe", { participantId: participant._id });
@@ -176,8 +181,9 @@ export default class Assistance extends React.Component {
   }
 
   async unpair(e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
     const assistance = await assistances.enqueue(this.state.assistance);
     this.setState({ assistance, timeoutSeconds: TIMEOUT });
+    this.configureTimer();
   }
 }

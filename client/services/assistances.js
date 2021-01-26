@@ -35,7 +35,6 @@ class Assistances {
 
   async update(assistance, data) {
     const response = await axios.patch(`/assistances/${assistance._id}`, data)
-
     return response.data
   }
 

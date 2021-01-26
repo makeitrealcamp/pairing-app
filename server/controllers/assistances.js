@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const ObjectId = mongoose.Types.ObjectId
 const Session = require('../models/Session')
 const Assistance = require('../models/Assistance')
+const io = require('socket.io-emitter')(process.env.REDIS_URL || "redis://127.0.0.1:6379");
 
 module.exports.getAll = async (req, res, next) => {
   const session = req.params.sessionId
@@ -86,6 +87,11 @@ module.exports.update = async (req, res, next) => {
 }
 
 module.exports.enqueue = async (req, res, next) => {
+  const id = new ObjectId(req.params.assistanceId)
+  const assistance = await Assistance.findOne({ _id: id })
+  if (assistance && assistance.status === "paired") {
+    io.to(`participant-${assistance.partner._id}`).emit("partner-abandoned")
+  }
   await update(req, res, next, { status: 'enqueued', enqueuedAt: new Date() })
 }
 
