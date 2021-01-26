@@ -135,6 +135,11 @@
     border: 1px solid darken($font_color, 15%);
     border-radius: 3px;
   }
+
+  .notification-alert {
+    @extend .notification;
+    background: rgba(156, 30, 20, 0.7);
+  }
 }
 
 .feedback-page {

@@ -24,7 +24,7 @@ export default class Chat extends React.Component {
     return (
       <div className="chat">
         <div className="header">
-          Usa este chat para coordinar tu sesión de pair programming. Recomendamos hacer la sesión a través de Skype.
+          Usa este chat para coordinar tu sesión de pair programming. Recomendamos hacer la sesión a través de Zoom o Meet.
         </div>
         <div className="messages">
           {this.state.messages.map((message, i) => (
