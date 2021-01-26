@@ -12,7 +12,7 @@ class Auth {
 
   async participant() {
     if (this._participant) {
-      return participant;
+      return this._participant;
     }
 
     if (!this.token) {

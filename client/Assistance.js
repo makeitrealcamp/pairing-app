@@ -8,6 +8,8 @@ import sessions from "./services/sessions";
 import assistances from "./services/assistances";
 import io from 'socket.io-client';
 
+const TIMEOUT = 60;
+
 export default class Assistance extends React.Component {
   constructor(props) {
     super(props);
@@ -16,7 +18,8 @@ export default class Assistance extends React.Component {
       loading: true,
       session: null,
       assistance: null,
-      showUnpairLink: false
+      showUnpairLink: false,
+      timeoutSeconds: TIMEOUT
     }
   }
 
@@ -26,7 +29,7 @@ export default class Assistance extends React.Component {
       const session = await sessions.findActive();
       if (session) {
         const assistance = await this.findOrCreateAssistance(session);
-        if (assistance.status === "enqueued") {
+        if (assistance.status === "enqueued" || assistance.status === "pairing") {
           this.configureTimer();
         }
         const state = { loading: false, assistance, session }
@@ -75,7 +78,7 @@ export default class Assistance extends React.Component {
       <div className=" page-common assistance-page">
         <div className="enqueued">
           <img src="loading.svg" />
-          <p>Iniciando sesión de pair programming ... </p>
+          <p>Buscando pareja para sesión de pair programming ... {this.state.timeoutSeconds} segundos restantes</p>
         </div>
       </div>
     )
@@ -137,10 +140,11 @@ export default class Assistance extends React.Component {
     const socket = io();
     socket.on('assistance-changed', assistance => {
       clearTimeout(this.timeout);
+      clearInterval(this.interval);
       if (assistance.status === "paired") {
         setTimeout(() => this.setState({ showUnpairLink: true }), 10000);
       }
-      this.setState({ assistance });
+      this.setState({ assistance, timeoutSeconds: TIMEOUT });
     });
 
     const participant = await auth.participant();
@@ -151,8 +155,12 @@ export default class Assistance extends React.Component {
   configureTimer() {
     this.timeout = setTimeout(async () => {
       const assistance = await assistances.dequeue(this.state.assistance);
-      this.setState({ loading: false, assistance });
+      this.setState({ loading: false, assistance, timeoutSeconds: TIMEOUT });
     }, 60000);
+
+    this.interval = setInterval(() => {
+      this.setState(state => ({ timeoutSeconds: state.timeoutSeconds - 1 }))
+    }, 1000)
   }
 
   async solo(e) {
@@ -170,6 +178,6 @@ export default class Assistance extends React.Component {
   async unpair(e) {
     e.preventDefault();
     const assistance = await assistances.enqueue(this.state.assistance);
-    this.setState({ assistance });
+    this.setState({ assistance, timeoutSeconds: TIMEOUT });
   }
 }
