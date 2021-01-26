@@ -10,17 +10,45 @@ export default class AdminSessionsNew extends React.Component {
 
     this.state = {
       loading: false,
-      session: { name: '' },
+      session: { name: '', exercisesUrl: '' },
     };
 
     this.onNameChange = this.onNameChange.bind(this);
     this.submit = this.submit.bind(this);
   }
 
+  render() {
+    if (this.state.loading) return <Loading />
+
+    const session = this.state.session
+    return (
+      <div className="page-common session-form">
+        <div className="form-group">
+          <label htmlFor="session-name">Nombre de la sesión</label>
+          <input type="text" onChange={this.onNameChange} value={session.name} autoFocus={true}></input>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="session-name">URL de ejercicios</label>
+          <input type="text" onChange={this.onUrlChange} value={session.exercisesUrl}></input>
+        </div>
+
+        <div className="actions">
+          <Link to="/admin/sessions">Volver</Link>
+          <button onClick={this.submit} disabled={session.name === ''} className="btn">Crear</button>
+        </div>
+      </div>
+    )
+  }
+
   onNameChange(e) {
     this.setState({...this.state, session: { name: e.target.value }})
   }
-  
+
+  onUrlChange(e) {
+    this.setState({...this.state, exercisesUrl: { name: e.target.value }})
+  }
+
   async submit() {
     if (this.state.session.name === '') {
       this.setState({ alert: { variant: "error", text: "Debes nombrar la sesión para crearla" } });
@@ -33,24 +61,5 @@ export default class AdminSessionsNew extends React.Component {
 
       this.props.history.push('/admin/sessions');
     }
-  }
-
-  render() {
-    if (this.state.loading) return <Loading />
-
-    const session = this.state.session
-    return ( 
-      <div className="page-common session-form">
-        <div className="form-group">
-          <label htmlFor="session-name">Nombre de la sesión</label>
-          <input type="text" onChange={this.onNameChange} value={session.name} autoFocus={true}></input>
-        </div>
-
-        <div className="actions">
-          <Link to="/admin/sessions">Volver</Link>
-          <button onClick={this.submit} disabled={session.name === ''} className="btn">Crear</button>
-        </div>
-      </div>
-    )
   }
 }
