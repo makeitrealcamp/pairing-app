@@ -1,40 +1,26 @@
-import axios from 'axios'
+import axios from '../axios'
 import auth from './auth'
 
 class Assistances {
   async getAll(sessionId) {
-    try {
-      const { data } = await axios.get(`/sessions/${sessionId}/assistances`,
-        { headers: { Authorization: auth.token },
-      })
-
-      return data
-    } catch (e) {
-      console.log(e)
-      if (e.response.status != 404) throw e
-      return null
-    }
+    const { data } = await axios.get(`/sessions/${sessionId}/assistances`)
+    return data
   }
 
   async findById(id) {
     try {
-      const response = await axios.get(`/assistances/${id}`, {
-        headers: { Authorization: auth.token },
-      })
-
+      const response = await axios.get(`/assistances/${id}`)
       return response.data
     } catch (e) {
-      if (e.response.status != 404) throw e
-      return null
+      if (e.response.status != 404) return null
+      console.error(e)
+      throw e
     }
   }
 
   async findBySession(sessionId) {
     try {
-      const response = await axios.get(`/sessions/${sessionId}/assistance`, {
-        headers: { Authorization: auth.token },
-      })
-
+      const response = await axios.get(`/sessions/${sessionId}/assistance`)
       return response.data
     } catch (e) {
       if (e.response.status != 404) throw e
@@ -43,51 +29,24 @@ class Assistances {
   }
 
   async create(sessionId) {
-    const response = await axios.post(
-      `/sessions/${sessionId}/assistances`,
-      {},
-      {
-        headers: { Authorization: auth.token },
-      }
-    )
-
+    const response = await axios.post(`/sessions/${sessionId}/assistances`, {})
     return response.data
   }
 
   async update(assistance, data) {
-    const response = await axios.patch(`/assistances/${assistance._id}`, data, {
-      headers: { Authorization: auth.token },
-    })
+    const response = await axios.patch(`/assistances/${assistance._id}`, data)
 
     return response.data
   }
 
   async enqueue(assistance) {
-    const response = await axios.patch(
-      `/assistances/${assistance._id}/enqueue`,
-      {},
-      {
-        headers: { Authorization: auth.token },
-      }
-    )
-
+    const response = await axios.patch(`/assistances/${assistance._id}/enqueue`, {})
     return response.data
   }
 
   async dequeue(assistance) {
-    try {
-      const response = await axios.patch(
-        `/assistances/${assistance._id}/dequeue`,
-        {},
-        {
-          headers: { Authorization: auth.token },
-        }
-      )
-
-      return response.data
-    } catch (e) {
-      throw e
-    }
+    const response = await axios.patch(`/assistances/${assistance._id}/dequeue`, {})
+    return response.data
   }
 }
 

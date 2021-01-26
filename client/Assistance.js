@@ -152,7 +152,7 @@ export default class Assistance extends React.Component {
     this.timeout = setTimeout(async () => {
       const assistance = await assistances.dequeue(this.state.assistance);
       this.setState({ loading: false, assistance });
-    }, 180000);
+    }, 60000);
   }
 
   async solo(e) {

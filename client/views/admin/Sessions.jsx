@@ -58,17 +58,14 @@ const AdminSessionIndex = () => {
           </tr>
         </thead>
         <tbody>
-          {sessions.map(({ id, name, assistances, withOutPair, ratingProm }) => (
+          {sessions.map(({ id, name, assistances, unpaired, rating }) => (
             <tr key={id}>
               <td>{name}</td>
               <td>{assistances}</td>
-              <td>{withOutPair}</td>
-              <td>{ratingProm?.toFixed(1) || 'No Rating'}</td>
+              <td>{unpaired}</td>
+              <td>{rating?.toFixed(1) || 'No Rating'}</td>
               <td>
-                <button
-                  onClick={() => history.push(`/admin/sessions/${id}/assistances`)}
-                  className="btn"
-                >
+                <button onClick={() => history.push(`/admin/sessions/${id}/assistances`)}className="btn">
                   Ver asistentes
                 </button>
               </td>
