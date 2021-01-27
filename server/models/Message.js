@@ -1,19 +1,19 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const schema = mongoose.Schema({
   chat: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Chat'
+    ref: 'Chat',
   },
   participant: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Participant'
+    ref: 'Participant',
   },
   text: String,
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-module.exports = mongoose.model("Message", schema);
+module.exports = mongoose.model('Message', schema);

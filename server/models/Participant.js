@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const schema = mongoose.Schema({
   email: {
@@ -6,21 +6,21 @@ const schema = mongoose.Schema({
     unique: true,
     lowercase: true,
     trim: true,
-    required: [true, "is required"]
+    required: [true, 'is required'],
   },
   github: {
     type: String,
     unique: true,
-    required: [true, "is required"]
+    required: [true, 'is required'],
   },
   avatarUrl: String,
   name: String,
   admin: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
-schema.index({ name: 'text', email: 'text', github: 'text'});
+schema.index({ name: 'text', email: 'text', github: 'text' });
 
-module.exports = mongoose.model("Participant", schema);
+module.exports = mongoose.model('Participant', schema);

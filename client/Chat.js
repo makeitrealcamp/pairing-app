@@ -6,9 +6,9 @@ export default class Chat extends React.Component {
     super(props);
 
     this.state = {
-      input: "",
-      messages: [] 
-    }
+      input: '',
+      messages: [],
+    };
   }
 
   componentDidMount() {
@@ -24,7 +24,8 @@ export default class Chat extends React.Component {
     return (
       <div className="chat">
         <div className="header">
-          Usa este chat para coordinar tu sesión de pair programming. Recomendamos hacer la sesión a través de Zoom o Meet.
+          Usa este chat para coordinar tu sesión de pair programming. Recomendamos hacer la sesión a través de Zoom o
+          Meet.
         </div>
         <div className="messages">
           {this.state.messages.map((message, i) => (
@@ -33,16 +34,26 @@ export default class Chat extends React.Component {
               <div className="text">{message.text}</div>
             </div>
           ))}
-          <div ref={(el) => { this.messagesEnd = el; }} />
+          <div
+            ref={(el) => {
+              this.messagesEnd = el;
+            }}
+          />
         </div>
-        <textarea onKeyUp={this.sendMessage.bind(this)} onChange={this.onChangeInput.bind(this)} rows="1" value={this.state.input} placeholder="Escribe un mensaje"></textarea>
+        <textarea
+          onKeyUp={this.sendMessage.bind(this)}
+          onChange={this.onChangeInput.bind(this)}
+          rows="1"
+          value={this.state.input}
+          placeholder="Escribe un mensaje"
+        ></textarea>
       </div>
     );
   }
 
   onChangeInput(e) {
     this.setState({
-      input: e.target.value
+      input: e.target.value,
     });
   }
 
@@ -50,26 +61,26 @@ export default class Chat extends React.Component {
     if (e.key === 'Enter') {
       this.setState({
         messages: this.state.messages.concat({ participant: this.props.assistance.participant, text: e.target.value }),
-        input: ""
+        input: '',
       });
-      this.socket.emit("message", {
+      this.socket.emit('message', {
         chatId: this.props.assistance.chat,
         participant: this.props.assistance.participant,
-        text: e.target.value
+        text: e.target.value,
       });
     }
   }
 
   configureWebSocket() {
     this.socket = io();
-    this.socket.on('message', message => {
+    this.socket.on('message', (message) => {
       this.setState({ messages: this.state.messages.concat(message) });
     });
 
-    this.socket.emit("chat", { chatId: this.props.assistance.chat });
+    this.socket.emit('chat', { chatId: this.props.assistance.chat });
   }
 
   scrollToBottom() {
-    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
   }
 }

@@ -1,12 +1,12 @@
-const path = require('path')
-const tailwindcss = require('tailwindcss')
-const autoprefixer = require('autoprefixer')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const path = require('path');
+const tailwindcss = require('tailwindcss');
+const autoprefixer = require('autoprefixer');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const NODE_ENV = process.env.NODE_ENV
-const isProd = NODE_ENV === 'production'
+const NODE_ENV = process.env.NODE_ENV;
+const isProd = NODE_ENV === 'production';
 
 module.exports = {
   entry: {
@@ -78,6 +78,6 @@ module.exports = {
       services: path.resolve(__dirname, 'client', 'services'),
       styles: path.resolve(__dirname, 'client', 'styles'),
       views: path.resolve(__dirname, 'client', 'views'),
-    }
+    },
   },
-}
+};

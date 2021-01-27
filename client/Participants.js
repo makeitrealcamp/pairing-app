@@ -1,13 +1,13 @@
-import React from 'react'
-import Loading from 'components/general/Loading'
-import Pagination from './Pagination'
-import Alert from './Alert'
-import Participant from './Participant'
-import participants from './services/participants'
+import React from 'react';
+import Loading from 'components/general/Loading';
+import Pagination from './Pagination';
+import Alert from './Alert';
+import Participant from './Participant';
+import participants from './services/participants';
 
 export default class Participants extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       loading: true,
@@ -17,19 +17,19 @@ export default class Participants extends React.Component {
       participants: [],
       count: 0,
       alert: null,
-    }
+    };
   }
 
   async componentDidMount() {
-    const response = await participants.findAll()
+    const response = await participants.findAll();
     if (response) {
-      const pages = Math.ceil(response.count / response.perPage)
+      const pages = Math.ceil(response.count / response.perPage);
       this.setState({
         loading: false,
         participants: response.documents,
         count: response.count,
         pages,
-      })
+      });
     } else {
       this.setState({
         loading: false,
@@ -37,13 +37,13 @@ export default class Participants extends React.Component {
           variant: 'error',
           text: `Ha ocurrido un error inesperado. Refresca la página e intenta nuevamente.`,
         },
-      })
+      });
     }
   }
 
   render() {
     if (this.state.loading) {
-      return <Loading />
+      return <Loading />;
     }
 
     return (
@@ -74,45 +74,37 @@ export default class Participants extends React.Component {
           </tbody>
         </table>
 
-        <Pagination
-          page={this.state.page}
-          pages={this.state.pages}
-          onPageChange={this.changePage.bind(this)}
-        />
+        <Pagination page={this.state.page} pages={this.state.pages} onPageChange={this.changePage.bind(this)} />
 
-        {this.state.alert ? (
-          <Alert variant={this.state.alert.variant}>
-            {this.state.alert.text}
-          </Alert>
-        ) : null}
+        {this.state.alert ? <Alert variant={this.state.alert.variant}>{this.state.alert.text}</Alert> : null}
       </div>
-    )
+    );
   }
 
   onSearchChange(e) {
-    this.setState({ query: e.target.value })
+    this.setState({ query: e.target.value });
   }
 
   async search(e) {
     if (e.key === 'Enter') {
-      const response = await participants.findAll(this.state.query, 1)
+      const response = await participants.findAll(this.state.query, 1);
 
-      const pages = Math.ceil(response.count / response.perPage)
+      const pages = Math.ceil(response.count / response.perPage);
       this.setState({
         participants: response.documents,
         pages,
         page: 1,
-      })
+      });
     }
   }
 
   async changePage(e, p) {
-    e.preventDefault()
+    e.preventDefault();
 
-    const response = await participants.findAll(this.state.query, p)
+    const response = await participants.findAll(this.state.query, p);
     this.setState({
       participants: response.documents,
       page: p,
-    })
+    });
   }
 }

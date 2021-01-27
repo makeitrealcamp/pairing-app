@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import assitanceService from 'services/assistances'
+import React, { useEffect, useState } from 'react';
+import assitanceService from 'services/assistances';
 
 const AdminAssistancesIndex = ({ match }) => {
-  const sessionId = match.params.id
-  const [isLoading, setIsLoading] = useState(true)
-  const [assistances, setAssistances] = useState([])
+  const sessionId = match.params.id;
+  const [isLoading, setIsLoading] = useState(true);
+  const [assistances, setAssistances] = useState([]);
 
   useEffect(() => {
     const fetchAssistances = async () => {
       try {
-        const data = await assitanceService.getAll(sessionId)
-        console.log(data)
+        const data = await assitanceService.getAll(sessionId);
+        console.log(data);
 
-        setAssistances(data)
+        setAssistances(data);
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-    }
+    };
 
-    fetchAssistances()
-  }, [])
+    fetchAssistances();
+  }, []);
 
   return (
     <div className="page-common participants-page">
@@ -36,7 +36,7 @@ const AdminAssistancesIndex = ({ match }) => {
           </tr>
         </thead>
         <tbody>
-          {assistances.map(({ status, feedback, participant: user}, idx) => (
+          {assistances.map(({ status, feedback, participant: user }, idx) => (
             <tr key={idx}>
               <td>{user.name}</td>
               <td>{user.github}</td>
@@ -50,7 +50,7 @@ const AdminAssistancesIndex = ({ match }) => {
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
-export default AdminAssistancesIndex
+export default AdminAssistancesIndex;

@@ -1,11 +1,11 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Loading from "components/general/Loading";
-import FormGroup from "./FormGroup";
-import Alert from "./Alert";
-import assistances from "./services/assistances";
-import _ from "lodash";
+import Loading from 'components/general/Loading';
+import FormGroup from './FormGroup';
+import Alert from './Alert';
+import assistances from './services/assistances';
+import _ from 'lodash';
 
 export default class Feedback extends React.Component {
   constructor(props) {
@@ -15,7 +15,7 @@ export default class Feedback extends React.Component {
       loading: true,
       assistance: null,
       errors: {},
-      alert: null
+      alert: null,
     };
 
     this.onClassInputChange = this.onClassInputChange.bind(this);
@@ -44,44 +44,59 @@ export default class Feedback extends React.Component {
       <div className="page-common feedback-page">
         <div className="form-group rating">
           {Array.apply(null, { length: feedback.rating }).map((e, i) => (
-            <FontAwesomeIcon key={i} icon={['fas', 'star']} onClick={() => this.rate(i + 1)} className="rating-star highlighted" />
+            <FontAwesomeIcon
+              key={i}
+              icon={['fas', 'star']}
+              onClick={() => this.rate(i + 1)}
+              className="rating-star highlighted"
+            />
           ))}
 
           {Array.apply(null, { length: 5 - feedback.rating }).map((e, i) => (
-            <FontAwesomeIcon key={i} icon={['far', 'star']} onClick={() => this.rate(feedback.rating + i + 1)} className="rating-star" />
+            <FontAwesomeIcon
+              key={i}
+              icon={['far', 'star']}
+              onClick={() => this.rate(feedback.rating + i + 1)}
+              className="rating-star"
+            />
           ))}
         </div>
         <FormGroup error={this.state.errors.class}>
           <label htmlFor="feedback-class">¿Cómo te pareció la clase de hoy?</label>
-          <textarea id="feedback-class" onChange={this.onClassInputChange} rows="3" value={ feedback.class } autoFocus></textarea>
+          <textarea
+            id="feedback-class"
+            onChange={this.onClassInputChange}
+            rows="3"
+            value={feedback.class}
+            autoFocus
+          ></textarea>
         </FormGroup>
         <div className="form-group">
-         <label htmlFor="feedback-exercises">¿Cómo te parecieron los ejercicios?</label>
-          <textarea onChange={this.onExercisesInputChange} rows="3" value={ feedback.exercises }></textarea>
+          <label htmlFor="feedback-exercises">¿Cómo te parecieron los ejercicios?</label>
+          <textarea onChange={this.onExercisesInputChange} rows="3" value={feedback.exercises}></textarea>
         </div>
-        {
-          this.state.assistance.partner ?
-            <div className="form-group">
-              <label htmlFor="feedback-partner">¿Cómo te fue con tu pareja de programación?</label>
-              <textarea onChange={this.onPartnerInputChange} rows="3" value={ feedback.partner }></textarea>
-            </div>
-          :
-            null
-        }
+        {this.state.assistance.partner ? (
+          <div className="form-group">
+            <label htmlFor="feedback-partner">¿Cómo te fue con tu pareja de programación?</label>
+            <textarea onChange={this.onPartnerInputChange} rows="3" value={feedback.partner}></textarea>
+          </div>
+        ) : null}
 
         <div className="actions">
           <Link to="/assistance">Volver</Link>
-          <button onClick={this.submit} className="btn">Enviar</button>
+          <button onClick={this.submit} className="btn">
+            Enviar
+          </button>
         </div>
 
         {this.state.alert ? <Alert variant={this.state.alert.variant}>{this.state.alert.text}</Alert> : null}
       </div>
-    )
+    );
   }
 
   rate(rating) {
     this.setState({
-      assistance: _.merge(this.state.assistance, { feedback: { rating: rating } })
+      assistance: _.merge(this.state.assistance, { feedback: { rating: rating } }),
     });
   }
 
@@ -90,36 +105,36 @@ export default class Feedback extends React.Component {
 
     this.setState({
       assistance: _.merge(this.state.assistance, { feedback: { class: value } }),
-      errors: {}
+      errors: {},
     });
 
     if (value.trim().length === 0) {
       this.setState({
-        errors: { ...this.state.errors, class: "is required" }
+        errors: { ...this.state.errors, class: 'is required' },
       });
     }
   }
 
   onExercisesInputChange(e) {
     this.setState({
-      assistance: _.merge(this.state.assistance, { feedback: { exercises: e.target.value } })
+      assistance: _.merge(this.state.assistance, { feedback: { exercises: e.target.value } }),
     });
   }
 
   onPartnerInputChange(e) {
     this.setState({
-      asssitance: _.merge(this.state.assistance, { feedback: { partner: e.target.value }})
+      asssitance: _.merge(this.state.assistance, { feedback: { partner: e.target.value } }),
     });
   }
 
   async submit() {
     if (this.state.assistance.feedback.rating === 0) {
-      this.setState({ alert: { variant: "error", text: "Debes calificar la sesión" } });
+      this.setState({ alert: { variant: 'error', text: 'Debes calificar la sesión' } });
       setTimeout(() => {
         this.setState({ alert: null });
       }, 4000);
     } else {
-      await assistances.update(this.state.assistance, { status: "rated", feedback: this.state.assistance.feedback });
+      await assistances.update(this.state.assistance, { status: 'rated', feedback: this.state.assistance.feedback });
       this.props.history.push('/thank-you');
     }
   }

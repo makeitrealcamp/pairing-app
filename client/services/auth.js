@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 
 class Auth {
   constructor() {
-    this.token = global.localStorage.getItem("auth_token");
+    this.token = global.localStorage.getItem('auth_token');
     this.participant();
   }
 
@@ -20,8 +20,8 @@ class Auth {
     }
 
     try {
-      const response = await axios.get("/participant", {
-        headers: { "Authorization": this.token }
+      const response = await axios.get('/participant', {
+        headers: { Authorization: this.token },
       });
 
       this._participant = response.data;
@@ -35,7 +35,7 @@ class Auth {
 
   async withCode(code) {
     try {
-      const response = await axios.post("/auth/github/token", { code: code });
+      const response = await axios.post('/auth/github/token', { code: code });
       localStorage.setItem('auth_token', response.data.token);
       this.token = response.data.token;
       return true;
@@ -48,7 +48,7 @@ class Auth {
   logout() {
     this.token = null;
     this._participant = null;
-    localStorage.removeItem("auth_token")
+    localStorage.removeItem('auth_token');
   }
 }
 
