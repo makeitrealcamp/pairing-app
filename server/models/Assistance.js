@@ -1,38 +1,38 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const schema = mongoose.Schema({
   participant: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Participant'
+    ref: 'Participant',
   },
   session: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Assistance'
+    ref: 'Assistance',
   },
   enqueuedAt: Date,
   status: {
     type: String,
-    enum : ["enqueued", "pairing", "solo", "paired", "not_paired", "rated"],
-    default: "enqueued"
+    enum: ['enqueued', 'pairing', 'solo', 'paired', 'not_paired', 'rated'],
+    default: 'enqueued',
   },
   partner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Participant'
+    ref: 'Participant',
   },
   feedback: {
     rating: Number,
     class: String,
     exercises: String,
-    partner: String
+    partner: String,
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   chat: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Chat'
-  }
+    ref: 'Chat',
+  },
 });
 
-module.exports = mongoose.model("Assistance", schema);
+module.exports = mongoose.model('Assistance', schema);

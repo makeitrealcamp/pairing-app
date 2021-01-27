@@ -1,8 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Ubuntu');
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-html, body, #app, .content {
+html,
+body,
+#app,
+.content {
   margin: 0;
   height: 100%;
 }
@@ -19,7 +24,7 @@ header.main-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #2F3336;
+  background: #2f3336;
   height: 70px;
   border-bottom: 1px solid #242728;
   // box-shadow: 1px 1px 10px #111;
@@ -68,7 +73,8 @@ header.main-header {
   }
 }
 
-.btn, a.btn {
+.btn,
+a.btn {
   color: $font_color;
   font-size: 1rem;
   font-weight: 600;
@@ -83,7 +89,9 @@ header.main-header {
   }
 }
 
-.text-center { text-align: center; }
+.text-center {
+  text-align: center;
+}
 
 .alert {
   position: absolute;

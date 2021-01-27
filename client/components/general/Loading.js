@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
-export default props => {
+export default (props) => {
   return (
     <div className="loading-page">
       <img src="../../loading.svg" />
-      { props.text ? <p>{props.text}</p> : null }
+      {props.text ? <p>{props.text}</p> : null}
     </div>
-  )
+  );
 };

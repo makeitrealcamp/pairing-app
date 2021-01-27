@@ -1,40 +1,34 @@
-import React from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Switch,
-  Redirect,
-} from 'react-router-dom'
+import React from 'react';
+import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom';
 
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { fab } from '@fortawesome/free-brands-svg-icons'
-import { far } from '@fortawesome/free-regular-svg-icons'
-import { fas } from '@fortawesome/free-solid-svg-icons'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 
 // TODO: Migrate all views
-import PrivateRoute from './PrivateRoute'
-import Home from './Home'
-import Login from './Login'
-import GithubCallback from './GithubCallback'
-import Assistance from './Assistance'
-import Feedback from './Feedback'
-import Message from './Message'
-import Participants from './Participants'
+import PrivateRoute from './PrivateRoute';
+import Home from './Home';
+import Login from './Login';
+import GithubCallback from './GithubCallback';
+import Assistance from './Assistance';
+import Feedback from './Feedback';
+import Message from './Message';
+import Participants from './Participants';
 // New Style
-import AdminRoute from './components/admin/AdminRoute'
-import AdminSessions from 'views/admin/Sessions'
-import AdminSessionsNew from 'views/admin/SessionsNew'
-import AdminParticipants from 'views/admin/Assistances'
+import AdminRoute from './components/admin/AdminRoute';
+import AdminSessions from 'views/admin/Sessions';
+import AdminSessionsNew from 'views/admin/SessionsNew';
+import AdminParticipants from 'views/admin/Assistances';
 
-import NotFound from 'components/general/NotFound'
+import NotFound from 'components/general/NotFound';
 
-import './styles/styles.scss'
+import './styles/styles.scss';
 
-library.add(fab)
-library.add(far)
-library.add(fas)
+library.add(fab);
+library.add(far);
+library.add(fas);
 
 const App = () => {
   return (
@@ -67,7 +61,7 @@ const App = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;

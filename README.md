@@ -6,31 +6,31 @@ Este proyecto lo utilizamos en las clases masivas de Make it Real para generar p
 
 Para este proyecto necesitas tener instalado lo siguiente:
 
-* Node.js
-* MongoDB (o puedes crear una cuenta en MongoLab)
-* Redis
+- Node.js
+- MongoDB (o puedes crear una cuenta en MongoLab)
+- Redis
 
 ## Configuración
 
 Para configurar este proyecto de forma local sigue estas instrucciones:
 
 1. Clona el proyecto de Git:
-    ````
-    $ git clone
-    ````
+   ```
+   $ git clone
+   ```
 2. Instala las dependencias con NPM:
-    ````
-    $ npm install
-    ````
+   ```
+   $ npm install
+   ```
 3. Crea una aplicación de OAuth en Github y crea un archivo `.env` con las credenciales:
-    ````
-    OAUTH_CLIENT_ID=...
-    OAUTH_CLIENT_SECRET=...
-    ````
+   ```
+   OAUTH_CLIENT_ID=...
+   OAUTH_CLIENT_SECRET=...
+   ```
 4. Ejecuta el proyecto con el siguiente comando:
-    ````
-    $ npm run dev:start
-    ````
+   ```
+   $ npm run dev:start
+   ```
 
 Para ver la aplicación en acción lo primero que debes crear es la sesión en [MongoDB](https://www.mongodb.com/):
 
@@ -73,15 +73,15 @@ $ npm run test:system
 
 Este proyecto está construído con las siguientes tecnologías:
 
-* [Node.js](https://nodejs.org/en/) para el backend.
-* [Express](https://expressjs.com/) es una librería de [Node.js](https://nodejs.org/en/) para crear el API.
-* [Socket.io](https://socket.io/) es una librería para Web Sockets (tiempo real).
-* [MongoDB](https://www.mongodb.com/) es la base de datos principal.
-* [Redis](https://redis.io/) es una base de datos no estructurada que utilizamos para [Socket.io](https://socket.io/) y controlar el script que crea las parejas.
-* [JWT (JSON Web Tokens)](https://jwt.io/) para almacenar información del usuario en el front.
-* [React](https://reactjs.org/) es un framework para el front-end.
-* [SASS](https://sass-lang.com/) es un preprocesador de CSS.
-* [Webpack](https://webpack.js.org/) para generar los archivos JS y CSS finales.
-* [Jest](https://jestjs.io/) para las pruebas automatizadas.
-* [Enzyme](https://airbnb.io/enzyme/) para las pruebas de los componentes de React.
-* [Puppeteer](https://pptr.dev/) para las pruebas de sistema.
+- [Node.js](https://nodejs.org/en/) para el backend.
+- [Express](https://expressjs.com/) es una librería de [Node.js](https://nodejs.org/en/) para crear el API.
+- [Socket.io](https://socket.io/) es una librería para Web Sockets (tiempo real).
+- [MongoDB](https://www.mongodb.com/) es la base de datos principal.
+- [Redis](https://redis.io/) es una base de datos no estructurada que utilizamos para [Socket.io](https://socket.io/) y controlar el script que crea las parejas.
+- [JWT (JSON Web Tokens)](https://jwt.io/) para almacenar información del usuario en el front.
+- [React](https://reactjs.org/) es un framework para el front-end.
+- [SASS](https://sass-lang.com/) es un preprocesador de CSS.
+- [Webpack](https://webpack.js.org/) para generar los archivos JS y CSS finales.
+- [Jest](https://jestjs.io/) para las pruebas automatizadas.
+- [Enzyme](https://airbnb.io/enzyme/) para las pruebas de los componentes de React.
+- [Puppeteer](https://pptr.dev/) para las pruebas de sistema.

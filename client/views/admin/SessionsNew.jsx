@@ -1,8 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import Loading from 'components/general/Loading'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Loading from 'components/general/Loading';
 
-import sessionService from 'services/sessions'
+import sessionService from 'services/sessions';
 
 export default class AdminSessionsNew extends React.Component {
   constructor(props) {
@@ -19,9 +19,9 @@ export default class AdminSessionsNew extends React.Component {
   }
 
   render() {
-    if (this.state.loading) return <Loading />
+    if (this.state.loading) return <Loading />;
 
-    const session = this.state.session
+    const session = this.state.session;
     return (
       <div className="page-common session-form">
         <div className="form-group">
@@ -36,23 +36,25 @@ export default class AdminSessionsNew extends React.Component {
 
         <div className="actions">
           <Link to="/admin/sessions">Volver</Link>
-          <button onClick={this.submit} disabled={session.name === ''} className="btn">Crear</button>
+          <button onClick={this.submit} disabled={session.name === ''} className="btn">
+            Crear
+          </button>
         </div>
       </div>
-    )
+    );
   }
 
   onNameChange(e) {
-    this.setState({...this.state, session: { name: e.target.value }})
+    this.setState({ ...this.state, session: { name: e.target.value } });
   }
 
   onUrlChange(e) {
-    this.setState({...this.state, exercisesUrl: { name: e.target.value }})
+    this.setState({ ...this.state, exercisesUrl: { name: e.target.value } });
   }
 
   async submit() {
     if (this.state.session.name === '') {
-      this.setState({ alert: { variant: "error", text: "Debes nombrar la sesión para crearla" } });
+      this.setState({ alert: { variant: 'error', text: 'Debes nombrar la sesión para crearla' } });
 
       setTimeout(() => {
         this.setState({ alert: null });

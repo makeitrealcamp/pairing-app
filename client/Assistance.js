@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import Loading from "components/general/Loading";
-import Chat from "./Chat";
+import Loading from 'components/general/Loading';
+import Chat from './Chat';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import auth from "./services/auth";
-import sessions from "./services/sessions";
-import assistances from "./services/assistances";
+import auth from './services/auth';
+import sessions from './services/sessions';
+import assistances from './services/assistances';
 import io from 'socket.io-client';
 
 const TIMEOUT = 60;
@@ -20,8 +20,8 @@ export default class Assistance extends React.Component {
       assistance: null,
       showUnpairLink: false,
       showAbandoned: false,
-      timeoutSeconds: TIMEOUT
-    }
+      timeoutSeconds: TIMEOUT,
+    };
   }
 
   async componentDidMount() {
@@ -30,11 +30,11 @@ export default class Assistance extends React.Component {
       const session = await sessions.findActive();
       if (session) {
         const assistance = await this.findOrCreateAssistance(session);
-        if (assistance.status === "enqueued" || assistance.status === "pairing") {
+        if (assistance.status === 'enqueued' || assistance.status === 'pairing') {
           this.configureTimer();
         }
-        const state = { loading: false, assistance, session }
-        if (assistance.status === "paired") {
+        const state = { loading: false, assistance, session };
+        if (assistance.status === 'paired') {
           state.showUnpairLink = true;
         }
         this.setState(state);
@@ -61,15 +61,15 @@ export default class Assistance extends React.Component {
   renderAssistance() {
     const status = this.state.assistance.status;
 
-    if (status === "enqueued" || status === "pairing") {
+    if (status === 'enqueued' || status === 'pairing') {
       return this.renderEnqueued();
-    } else if (status === "not_paired") {
+    } else if (status === 'not_paired') {
       return this.renderNotPaired();
-    } else if (status === "paired") {
+    } else if (status === 'paired') {
       return this.renderPaired();
-    } else if (status === "solo") {
+    } else if (status === 'solo') {
       return this.renderSolo();
-    } else if (status === "rated") {
+    } else if (status === 'rated') {
       return <Redirect to={`/assistances/${this.state.assistance._id}/feedback`} />;
     }
   }
@@ -82,14 +82,23 @@ export default class Assistance extends React.Component {
           <p>Buscando pareja para sesión de pair programming ... {this.state.timeoutSeconds} segundos restantes</p>
         </div>
       </div>
-    )
+    );
   }
 
   renderNotPaired() {
     return (
       <div className="page-common assistance-page">
         <div className="text-center">
-          <p className="intro">No fue posible encontrar una pareja de trabajo. Puedes <a href="#" onClick={this.solo.bind(this)}>trabajar individualmente</a> o <a href="/assistance" onClick={this.retry}>intentarlo nuevamente</a></p>
+          <p className="intro">
+            No fue posible encontrar una pareja de trabajo. Puedes{' '}
+            <a href="#" onClick={this.solo.bind(this)}>
+              trabajar individualmente
+            </a>{' '}
+            o{' '}
+            <a href="/assistance" onClick={this.retry}>
+              intentarlo nuevamente
+            </a>
+          </p>
         </div>
       </div>
     );
@@ -108,10 +117,39 @@ export default class Assistance extends React.Component {
                 <span className="partner-github">{this.state.assistance.partner.github}</span>
               </div>
             </div>
-            {this.state.session.exercisesUrl ? <p className="footnote"><a href={this.state.session.exercisesUrl} target="_blank">Abrir los ejercicios&nbsp;<FontAwesomeIcon icon={['fas', 'external-link-alt']} /></a></p> : null}
-            <p className="footnote">Cuando termines los ejercicios no olvides <Link to={`/assistances/${this.state.assistance._id}/feedback`}>calificar la sesión y dejar retroalimentación</Link>.</p>
-            {this.state.showUnpairLink ? <div className="notification">Si no te pudiste comunicar con tu pareja <a href="#" onClick={this.unpair.bind(this)}>haz click acá</a> para buscar nuevamente.</div> : null}
-            {this.state.showAbandoned ? <div className="notification-alert">Tu pareja ha abandonado la sesión. <a href="#" onClick={this.unpair.bind(this)}>haz click acá</a> para buscar nuevamente.</div> : null}
+            {this.state.session.exercisesUrl ? (
+              <p className="footnote">
+                <a href={this.state.session.exercisesUrl} target="_blank">
+                  Abrir los ejercicios&nbsp;
+                  <FontAwesomeIcon icon={['fas', 'external-link-alt']} />
+                </a>
+              </p>
+            ) : null}
+            <p className="footnote">
+              Cuando termines los ejercicios no olvides{' '}
+              <Link to={`/assistances/${this.state.assistance._id}/feedback`}>
+                calificar la sesión y dejar retroalimentación
+              </Link>
+              .
+            </p>
+            {this.state.showUnpairLink ? (
+              <div className="notification">
+                Si no te pudiste comunicar con tu pareja{' '}
+                <a href="#" onClick={this.unpair.bind(this)}>
+                  haz click acá
+                </a>{' '}
+                para buscar nuevamente.
+              </div>
+            ) : null}
+            {this.state.showAbandoned ? (
+              <div className="notification-alert">
+                Tu pareja ha abandonado la sesión.{' '}
+                <a href="#" onClick={this.unpair.bind(this)}>
+                  haz click acá
+                </a>{' '}
+                para buscar nuevamente.
+              </div>
+            ) : null}
           </div>
           <Chat assistance={this.state.assistance} />
         </div>
@@ -123,7 +161,13 @@ export default class Assistance extends React.Component {
     return (
       <div className="page-common assistance-page">
         <p className="intro">Estás en una sesión individual</p>
-        <p className="footnote">Cuando termines los ejercicios no olvides <Link to={`/assistances/${this.state.assistance._id}/feedback`}>calificar la sesión y dejar retroalimentación</Link>.</p>
+        <p className="footnote">
+          Cuando termines los ejercicios no olvides{' '}
+          <Link to={`/assistances/${this.state.assistance._id}/feedback`}>
+            calificar la sesión y dejar retroalimentación
+          </Link>
+          .
+        </p>
       </div>
     );
   }
@@ -132,7 +176,7 @@ export default class Assistance extends React.Component {
     let assistance = await assistances.findBySession(session._id);
     if (!assistance) {
       assistance = await assistances.create(session._id);
-    } else if (assistance.status === "not_paired") {
+    } else if (assistance.status === 'not_paired') {
       assistance = await assistances.enqueue(assistance);
     }
     return assistance;
@@ -140,20 +184,20 @@ export default class Assistance extends React.Component {
 
   async configureWebSocket(assistance) {
     const socket = io();
-    socket.on('assistance-changed', assistance => {
+    socket.on('assistance-changed', (assistance) => {
       clearTimeout(this.timeout);
       clearInterval(this.interval);
-      if (assistance.status === "paired") {
+      if (assistance.status === 'paired') {
         setTimeout(() => this.setState({ showUnpairLink: true }), 10000);
       }
       this.setState({ assistance, timeoutSeconds: TIMEOUT });
     });
     socket.on('partner-abandoned', () => {
-      this.setState({ showAbandoned: true })
-    })
+      this.setState({ showAbandoned: true });
+    });
 
     const participant = await auth.participant();
-    socket.emit("subscribe", { participantId: participant._id });
+    socket.emit('subscribe', { participantId: participant._id });
     return socket;
   }
 
@@ -164,15 +208,15 @@ export default class Assistance extends React.Component {
     }, 60000);
 
     this.interval = setInterval(() => {
-      this.setState(state => ({ timeoutSeconds: state.timeoutSeconds - 1 }))
-    }, 1000)
+      this.setState((state) => ({ timeoutSeconds: state.timeoutSeconds - 1 }));
+    }, 1000);
   }
 
   async solo(e) {
     e.preventDefault();
 
     this.setState({ loading: true });
-    const assistance = await assistances.update(this.state.assistance, { status: "solo" });
+    const assistance = await assistances.update(this.state.assistance, { status: 'solo' });
     this.setState({ loading: false, assistance });
   }
 

@@ -1,5 +1,5 @@
-@import "variables";
-@import "common";
+@import 'variables';
+@import 'common';
 //@tailwind base;
 //@tailwind components;
 //@tailwind utilities;
@@ -150,7 +150,7 @@
 
     &.has-error {
       textarea,
-      input[type="text"] {
+      input[type='text'] {
         border-color: red;
       }
     }
