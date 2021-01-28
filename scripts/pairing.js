@@ -41,18 +41,16 @@ const pair = async (a1, a2) => {
 }
 
 const execute = async () => {
-  const a1 = await dequeue();
-  if (!a1) {
-    return console.log("No pending assistances found");
-  }
-
-  const a2 = await dequeue();
-  if (a2) {
-    await pair(a1, a2);
-    console.log(`* Paired: ${a1.participant.github} with ${a2.participant.github}`);
-  } else {
-    console.log("No partner found for participant:", a1.participant.github);
-    await Assistance.updateOne({ _id: a1._id }, { $set: { status: "enqueued" } });
+  let a1
+  while (a1 = await dequeue()) {
+    const a2 = await dequeue();
+    if (a2) {
+      await pair(a1, a2);
+      console.log(`* Paired: ${a1.participant.github} with ${a2.participant.github}`);
+    } else {
+      console.log("No partner found for participant:", a1.participant.github);
+      await Assistance.updateOne({ _id: a1._id }, { $set: { status: "enqueued" } });
+    }
   }
 };
 
@@ -107,7 +105,7 @@ const run = async () => {
   }
 }
 
-console.log("Starting ...");
+console.log("Starting pairing script ...");
 set("pairing:running", "true").then(() => {
   run();
 });
