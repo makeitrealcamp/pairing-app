@@ -45,11 +45,11 @@ export default class AdminSessionsNew extends React.Component {
   }
 
   onNameChange(e) {
-    this.setState({ ...this.state, session: { name: e.target.value } });
+    this.setState({ ...this.state, session: { ...this.state.session, name: e.target.value } });
   }
 
   onUrlChange(e) {
-    this.setState({ ...this.state, exercisesUrl: { name: e.target.value } });
+    this.setState({ ...this.state, session: { ...this.state.session, exercisesUrl: e.target.value } });
   }
 
   async submit() {
