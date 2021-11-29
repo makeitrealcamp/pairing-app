@@ -4,7 +4,11 @@ const Participant = require('../models/Participant');
 
 // Helper method
 const loadUserFromGithub = async (token) => {
-  let res = await axios.get('https://api.github.com/user?access_token=' + token);
+  let res = await axios.get('https://api.github.com/user', {
+    headers: {
+      'Authorization': "token " + token
+    }
+  });
   const user = {
     email: res.data.email,
     github: res.data.login,
@@ -13,7 +17,11 @@ const loadUserFromGithub = async (token) => {
   };
 
   if (!user.email) {
-    res = await axios.get('https://api.github.com/user/emails?access_token=' + token);
+    res = await axios.get('https://api.github.com/user/emails', {
+      headers: {
+        'Authorization': "token " + token
+      }
+    });
     console.log(`Github user ${user.github} has no public email, finding email ...`);
     console.log(res.data);
     user.email = res.data.find((g) => g.primary).email;
